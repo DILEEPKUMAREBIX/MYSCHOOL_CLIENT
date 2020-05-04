@@ -99,12 +99,12 @@
                     <!--If is a single link-->
                     <a [routerLink]="[menuitem.path]" *ngIf="menuitem.type === 'link'" class="nav-link">
                         <i class="material-icons">{{menuitem.icontype}}</i>
-                        <p>{{menuitem.title}}</p>
+                        <p>{{menuitem.title | translate}}</p>
                     </a>
                     <!--If it have a submenu-->
                     <a data-toggle="collapse" href="#{{menuitem.collapse}}" *ngIf="menuitem.type === 'sub'" (click)="updatePS()" class="nav-link">
                         <i class="material-icons">{{menuitem.icontype}}</i>
-                        <p>{{menuitem.title}}<b class="caret"></b></p>
+                        <p>{{menuitem.title | translate}}<b class="caret"></b></p>
                     </a>
 
                     <!--Display the submenu items-->
@@ -119,12 +119,12 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="http://md-pro-angular.creative-tim.com/documentation/tutorial?ref=md-pro-archive" class="nav-link">
                         <i class="material-icons">school</i>
                         <p>Documentation</p>
                     </a>
-                </li>
+                </li> -->
             </ul>
 
         </div>
