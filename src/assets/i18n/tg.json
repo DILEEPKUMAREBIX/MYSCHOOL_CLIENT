@@ -2,6 +2,17 @@
     "myschool": {
         "schoolTitle":"పాఠశాలలు",
         "newSchoolBtn":"కొత్త పాఠశాల",
-        "id": "ఐడి"
+        "id": "ఐడి",
+        "nameEng":"Name",
+        "village": "Village",
+        "mandal": "Mandal",
+        "actions": "Actions",
+        "type": "Type",
+        "createdDate": "CreatedDate",
+
+        "userTitle":"వ్యక్తిలు",
+        "newUserBtn":"కొత్త వ్యక్తి",
+        "category": "User Category",
+        "dob": "DOB"
     }
 }

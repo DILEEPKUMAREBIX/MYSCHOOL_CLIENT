@@ -5,12 +5,12 @@
         <div class="card">
           <div class="card-header card-header-primary card-header-icon">
             <div class="card-icon"><i class="material-icons">assignment</i></div>
-            <h4 class="card-title">{{ 'myschool.schoolTitle' | translate }}</h4>
+            <h4 class="card-title">{{ 'myschool.userTitle' | translate }}</h4>
           </div>
           <div class="card-body">
             <div class="toolbar">
               <button mat-raised-button class="btn btn-behance"
-                (click)="open(content, true)">{{ 'myschool.newSchoolBtn' | translate }}
+                (click)="open(content, true)">{{ 'myschool.newUserBtn' | translate }}
               </button>
             </div>
             <div class="material-datatables">
@@ -21,21 +21,21 @@
                   <th>{{ 'myschool.nameEng' | translate }}</th>
                   <th>{{ 'myschool.village' | translate }}</th>
                   <th>{{ 'myschool.mandal' | translate }}</th>
-                  <th>{{ 'myschool.type' | translate }}</th>
-                  <th>{{ 'myschool.createdDate' | translate }}</th>
+                  <th>{{ 'myschool.category' | translate }}</th>
+                  <th>{{ 'myschool.dob' | translate }}</th>
                   <th>{{ 'myschool.actions' | translate }}</th>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let school of schools">
-                    <td>{{school.schoolId}}</td>
-                    <td>{{school.name}}</td>
-                    <td>{{school.address.village}}</td>
-                    <td>{{school.address.mandal}}</td>
-                    <td>{{school.type.name}}</td>
-                    <td>{{school.createdDate | date}}</td>
+                  <tr *ngFor="let user of users">
+                    <td>{{user?.userId}}</td>
+                    <td>{{user?.firstName + ' ' + user?.lastName}}</td>
+                    <td>{{user?.address?.village}}</td>
+                    <td>{{user?.address?.mandal}}</td>
+                    <td>{{user?.category?.name}}</td>
+                    <td>{{user?.dateOfBirth | date}}</td>
                     <td class="">
-                      <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit" (click)="open(content, false, school)"><i class="material-icons">dvr</i></a>
-                      <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove" (click)="openDelete(deleteConfirm, school)"><i class="material-icons">close</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit" (click)="open(content, false, user)"><i class="material-icons">dvr</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove" (click)="openDelete(deleteConfirm, user)"><i class="material-icons">close</i></a>
                     </td>
                   </tr>
                 </tbody>
@@ -110,7 +110,7 @@
   <div class="modal-body">
     <p>
       <strong>Are you sure you want to delete
-        <span class="text-primary">School: {{deletionSchool.schoolNameAr}}
+        <span class="text-primary">User: {{deletionSchool.schoolNameAr}}
         </span> ?</strong>
     </p>
     <p>All information associated with this will be permanently deleted.

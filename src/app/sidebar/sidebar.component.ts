@@ -27,14 +27,37 @@ export const ROUTES: RouteInfo[] = [{
     title: 'Dashboard',
     type: 'link',
     icontype: 'dashboard'
-},
-{
+}, {
     path: '/schools',
     title: 'myschool.schoolTitle',
     type: 'link',
     icontype: 'apps'
-}
-    , {
+}, {
+    path: '/users',
+    title: 'myschool.userTitle',
+    type: 'link',
+    icontype: 'apps'
+}, {
+    path: '/schools1',
+    title: 'Attendance',
+    type: 'link',
+    icontype: 'apps'
+}, {
+    path: '/schools2',
+    title: 'Time Table',
+    type: 'link',
+    icontype: 'apps'
+}, {
+    path: '/schools3',
+    title: 'Marks',
+    type: 'link',
+    icontype: 'apps'
+}, {
+    path: '/schools4',
+    title: 'Configure School',
+    type: 'link',
+    icontype: 'apps'
+}, {
     path: '/tables',
     title: 'Tables',
     type: 'sub',
@@ -139,7 +162,7 @@ export class SidebarComponent implements OnInit {
     ps: any;
 
     constructor(public translate: TranslateService) {
-        
+
     }
 
     isMobileMenu() {

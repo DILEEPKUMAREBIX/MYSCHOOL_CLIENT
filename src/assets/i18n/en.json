@@ -2,6 +2,17 @@
     "myschool": {
         "schoolTitle":"Schools",
         "newSchoolBtn":"New School",
-        "id": "Id"
+        "id": "Id",
+        "nameEng":"Name",
+        "village": "Village",
+        "mandal": "Mandal",
+        "actions": "Actions",
+        "type": "Type",
+        "createdDate": "CreatedDate",
+
+        "userTitle":"Users",
+        "newUserBtn":"New User",
+        "category": "User Category",
+        "dob": "DOB"
     }
 }

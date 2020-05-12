@@ -23,6 +23,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UsersComponent } from './users/user.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
-    SchoolComponent
+    SchoolComponent,
+    UsersComponent
   ],
   bootstrap: [AppComponent]
 })
