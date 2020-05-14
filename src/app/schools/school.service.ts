@@ -6,9 +6,9 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class SchoolService {
-  
+
   usedLanguage: any = 'en';
-  
+
   url: string = environment.APIURL + 'myschool/';
   constructor(private http: HttpClient) { }
 
@@ -19,6 +19,14 @@ export class SchoolService {
     // });
     // return this.http.get(this.url + 'Schools', {headers: reqHeader});
     return this.http.get(this.url + 'schools');
+  }
+
+  createSchool(school: any) {
+    return this.http.post(this.url + 'schools', school);
+  }
+
+  deleteSchool(id: any) {
+    return this.http.delete(this.url + 'schools/' + id);
   }
 
 }

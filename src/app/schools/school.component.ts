@@ -4,46 +4,101 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { SchoolService } from './school.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { School } from '../shared/models/school.interface';
 
 @Component({
   selector: 'app-school',
-  templateUrl: './school.component.html'
+  templateUrl: './school.component.html',
+  styleUrls: ['./school.component.css']
 })
 export class SchoolComponent implements OnInit {
-
-  schoolObj: any = {};
-  isNew
-  manageSchoolHeading
-  animal: string;
-  name: string;
+  isNew: boolean;
+  manageSchoolHeading: string;
   closeResult;
   schools: any = [];
   deletionSchool: any;
-  organisations: any = [];
-  departments: any = [];
+
+
+  schoolGroup: FormGroup;
 
   constructor(public dialog: MatDialog, private modalService: NgbModal, private translate: TranslateService,
     private schoolService: SchoolService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private fb: FormBuilder
   ) {
     translate.setDefaultLang('en');
+  }
+
+  ngOnInit() {
+    this.schoolGroup = this.fb.group({
+      schoolId: [null],
+      name: ['', [Validators.required]],
+      typeId: ['', [Validators.required]],
+      address: this.fb.group({
+        houseNum: ['', [Validators.required]],
+        street: ['', Validators.required],
+        village: ['', Validators.required],
+        landmark: ['', Validators.required],
+        mandal: ['', Validators.required],
+        district: ['', Validators.required],
+        state: ['', Validators.required],
+        pincode: ['', Validators.required]
+      })
+    });
+    this.loadSchools();
+  }
+
+  loadSchools() {
+    this.schoolService.getAllSchools().subscribe(
+      data => {
+        this.schools = data;
+      },
+      error => { }
+    );
+  }
+
+  saveOrUpdate() {
+    console.log(this.schoolGroup.value);
+    this.schoolService.createSchool(this.schoolGroup.value).subscribe(
+      (data: any) => {
+        console.log(data);
+        this.modalService.dismissAll("on success");
+        this.toastr.success('school created/updated', 'Success');
+        this.loadSchools();
+        this.schoolGroup.reset();
+      },
+      (error: any) => {
+        console.log(error);
+        this.modalService.dismissAll("on fail");
+        this.toastr.error('Error in creating school', 'Error');
+      }
+    );
+  }
+
+  onDeleteConfirmation() {
+    this.schoolService.deleteSchool(this.deletionSchool.schoolId).subscribe(
+      (data: any) => {
+        this.loadSchools();
+        this.modalService.dismissAll("on fail");
+        this.toastr.success('School Deleted', 'Success');
+      },
+      error => {
+        this.modalService.dismissAll("on fail");
+      }
+    );
   }
 
 
   open(content, type: boolean, school?) {
     this.isNew = type;
     this.manageSchoolHeading = this.isNew
-      ? "Create SMS school"
-      : "Update SMS school";
+      ? "Create School"
+      : "Update School";
     if (this.isNew) {
-      this.clearSchool();
-      if (this.organisations.length > 0)
-        this.schoolObj["organizationId"] = this.organisations[0].id;
-
-      if (this.departments.length > 0)
-        this.schoolObj["departmentId"] = this.departments[0].departmentId;
+      
     } else {
-      this.updateSchoolFields(school);
+      this.schoolGroup.patchValue(school, { onlySelf: true });
     }
     this.modalService
       .open(content, {
@@ -59,30 +114,6 @@ export class SchoolComponent implements OnInit {
         }
       );
   }
-
-  ngOnInit() {
-    this.loadSchools();
-  }
-
-  updateSchoolFields(school) {
-    this.schoolObj["schoolId"] = school.schoolId;
-    this.schoolObj["schoolNameAr"] = school.schoolNameAr;
-    this.schoolObj["schoolNameEng"] = school.schoolNameEng;
-    this.schoolObj["organizationId"] = school.organizationId;
-    this.schoolObj["departmentId"] = school.departmentId;
-    this.schoolObj["recordStatus"] = school.recordStatus;
-
-  }
-
-  clearSchool() {
-    this.schoolObj["schoolId"] = '';
-    this.schoolObj["schoolNameAr"] = '';
-    this.schoolObj["schoolNameEng"] = '';
-    this.schoolObj["organizationId"] = '';
-    this.schoolObj["recordStatus"] = '';
-    this.schoolObj["departmentId"] = '';
-  }
-
 
   openDelete(deleteConfirm, school) {
     this.deletionSchool = school;
@@ -108,58 +139,5 @@ export class SchoolComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
-  }
-
-  onDeleteConfirmation() {
-    // this.schoolService.deleteSchool(this.deletionSchool.schoolId).subscribe(
-    //   (data: any) => {
-    //     this.loadSchools();
-    //     this.modalService.dismissAll("on fail");
-    //     this.toastr.success('School Deleted', 'Success');
-    //   },
-    //   error => {
-    //     this.modalService.dismissAll("on fail");
-    //   }
-    // );
-  }
-
-  useLanguage(language: string) {
-    this.translate.use(language);
-  }
-
-  loadSchools() {
-    this.schoolService.getAllSchools().subscribe(
-      data => {
-        this.schools = data;
-      },
-      error => { }
-    );
-  }
-
-  saveOrUpdate() {
-    if (this.schoolObj['organizationId'] == null || this.schoolObj['organizationId'] == undefined) {
-      this.toastr.error('Organisation is mandotary to save', 'Error');
-      return;
-    }
-
-    if (this.schoolObj['departmentId'] == null || this.schoolObj['departmentId'] == undefined) {
-      this.toastr.error('Department is mandotary to save', 'Error');
-      return;
-    }
-
-    this.schoolObj['recordStatus'] = 1;
-    // this.schoolService.createSchool(this.schoolObj).subscribe(
-    //   (data: any) => {
-    //     console.log(data);
-    //     this.modalService.dismissAll("on success");
-    //     this.toastr.success('school created/updated', 'Success');
-    //     this.loadSchools();
-    //   },
-    //   (error: any) => {
-    //     console.log(error);
-    //     this.modalService.dismissAll("on fail");
-    //     this.toastr.error('Error in creating school', 'Error');
-    //   }
-    // );
   }
 }

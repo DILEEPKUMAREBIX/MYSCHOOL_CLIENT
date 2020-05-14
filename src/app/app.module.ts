@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './app.component';
@@ -61,6 +61,7 @@ import { UsersComponent } from './users/user.component';
       }
     }),
     ToastrModule.forRoot(),
+    ReactiveFormsModule
   ],
   declarations: [
     AppComponent,

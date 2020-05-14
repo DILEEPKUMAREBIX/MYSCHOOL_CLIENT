@@ -34,8 +34,10 @@
                     <td>{{school.type.name}}</td>
                     <td>{{school.createdDate | date}}</td>
                     <td class="">
-                      <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit" (click)="open(content, false, school)"><i class="material-icons">dvr</i></a>
-                      <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove" (click)="openDelete(deleteConfirm, school)"><i class="material-icons">close</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit"
+                        (click)="open(content, false, school)"><i class="material-icons">dvr</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove"
+                        (click)="openDelete(deleteConfirm, school)"><i class="material-icons">close</i></a>
                     </td>
                   </tr>
                 </tbody>
@@ -58,44 +60,89 @@
     </button>
   </div>
   <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <label for="inputCity">{{ 'sms.selectOrganisation' | translate }}</label>
-        <select class="form-control" id="sel1" [ngModelOptions]="{standalone: true}"
-          [(ngModel)]="schoolObj['organizationId']">
-          <option *ngFor="let org of organisations" [value]="org.id"> {{org.orgNameEng}}</option>
-        </select>
+    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="schoolGroup">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Name</label>
+            <input type="text" class="form-control" formControlName="name">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">type</label>
+            <input type="text" class="form-control" formControlName="typeId">
+          </div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="inputCity">{{ 'sms.departmentTitle' | translate }}</label>
-        <select class="form-control" id="sel1" [ngModelOptions]="{standalone: true}"
-          [(ngModel)]="schoolObj['departmentId']">
-          <option *ngFor="let loc of departments" [value]="loc.departmentId"> {{loc.departmentNameEng}}</option>
-        </select>
+      <div formGroupName="address">
+        <h5 class="card-title">Address</h5>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label class="bmd-label-floating">House Number</label>
+              <input type="text" class="form-control" formControlName="houseNum">
+              <div class="error text-danger"
+                *ngIf="schoolGroup.get('address').get('houseNum').hasError('required') && schoolGroup.get('address').get('houseNum').touched">
+                House Number is required
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="bmd-label-floating">Street</label>
+              <input type="text" class="form-control" formControlName="street">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="bmd-label-floating">Village</label>
+              <input type="email" class="form-control" formControlName="village">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="bmd-label-floating">Landmark</label>
+              <input type="text" class="form-control" formControlName="landmark">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="bmd-label-floating">Mandal</label>
+              <input type="text" class="form-control" formControlName="mandal">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="bmd-label-floating">District</label>
+              <input type="text" class="form-control" formControlName="district">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="bmd-label-floating">State</label>
+              <input type="text" class="form-control" formControlName="state">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="bmd-label-floating">Postal Code</label>
+              <input type="text" class="form-control" formControlName="pincode">
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="inputAddress">
-          <b> {{ 'sms.schoolNameEng' | translate }}</b>
-        </label>
-        <input type="text" class="form-control" id="inputAddress" [(ngModel)]="schoolObj['schoolNameEng']"
-          [ngModelOptions]="{standalone: true}">
-      </div>
-
-      <div class="form-group">
-        <label for="inputAddress1">
-          <b> {{ 'sms.schoolNameAr' | translate }}</b>
-        </label>
-        <input type="text" class="form-control" id="inputAddress1" [(ngModel)]="schoolObj['schoolNameAr']"
-          [ngModelOptions]="{standalone: true}">
-      </div>
-
+      <!-- <app-address></app-address> -->
     </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
+    <!-- <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button> -->
+    <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="saveOrUpdate()">Update Profile</button>
   </div>
 </ng-template>
 
@@ -110,7 +157,7 @@
   <div class="modal-body">
     <p>
       <strong>Are you sure you want to delete
-        <span class="text-primary">School: {{deletionSchool.schoolNameAr}}
+        <span class="text-primary">School: {{deletionSchool.name}}
         </span> ?</strong>
     </p>
     <p>All information associated with this will be permanently deleted.

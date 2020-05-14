@@ -71,10 +71,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // constructor(private navbarTitleService: NavbarTitleService) { }
   public ngOnInit() {
       this.tableData = {
-          headerRow: ['ID', 'Name', 'Salary', 'Country', 'City'],
+          headerRow: ['ID', 'Name', 'Salary', 'State', 'City'],
           dataRows: [
-              ['US', 'USA', '2.920	', '53.23%'],
-              ['DE', 'Germany', '1.300', '20.43%'],
+              ['US', 'AP', '2.920	', '53.23%'],
+              ['DE', 'Telangana', '1.300', '20.43%'],
               ['AU', 'Australia', '760', '10.35%'],
               ['GB', 'United Kingdom	', '690', '7.87%'],
               ['RO', 'Romania', '600', '5.94%'],
