@@ -62,22 +62,24 @@
   <div class="modal-body">
     <form novalidate (ngSubmit)="onSubmit()" [formGroup]="schoolGroup">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="form-group">
             <label class="bmd-label-floating">Name</label>
             <input type="text" class="form-control" formControlName="name">
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="form-group">
+            <!-- <label class="bmd-label-floating">type</label> -->
+            <!-- <input type="text" class="form-control" formControlName="typeId"> -->
+            <!-- <select class="custom-select" id="inputGroupSelect01">
+              <option *ngFor="let value of typeValues" [value]='value.id'>{{value.name}}</option>
+            </select> -->
             <label class="bmd-label-floating">type</label>
-            <input type="text" class="form-control" formControlName="typeId">
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label class="bmd-label-floating">Anniversary</label>
-            <input type="date" class="form-control" formControlName="anniversary">
+              <select id="inputState" class="form-control" formControlName="typeId">
+                <option selected [value]='0'>Choose...</option>
+                <option *ngFor="let value of typeValues" [value]='value.id'>{{value.name}}</option>
+              </select>
           </div>
         </div>
       </div>
@@ -88,8 +90,8 @@
             <div class="form-group">
               <label class="bmd-label-floating">House Number</label>
               <input type="text" class="form-control" formControlName="houseNum">
-              <div class="error text-danger" *ngIf="schoolGroup.get('address').get('houseNum').hasError('required') 
-                && schoolGroup.get('address').get('houseNum').touched">
+              <div class="error text-danger"
+                *ngIf="schoolGroup.get('address').get('houseNum').hasError('required') && schoolGroup.get('address').get('houseNum').touched">
                 House Number is required
               </div>
             </div>
@@ -142,21 +144,19 @@
           </div>
         </div>
       </div>
-      <!-- <app-address></app-address> -->
     </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
     <!-- <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button> -->
-    <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="saveOrUpdate()">save
-      Profile</button>
+    <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
   </div>
 </ng-template>
 
 
 <ng-template #deleteConfirm let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-title"> {{ 'Delete school' | translate }}</h4>
+    <h4 class="modal-title" id="modal-title"> {{ 'sms.schoolDelete' | translate }}</h4>
     <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>

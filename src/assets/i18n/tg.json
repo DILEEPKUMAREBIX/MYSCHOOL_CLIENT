@@ -13,6 +13,7 @@
         "userTitle":"వ్యక్తిలు",
         "newUserBtn":"కొత్త వ్యక్తి",
         "category": "User Category",
-        "dob": "DOB"
+        "dob": "DOB",
+        "schoolName": "School Name"
     }
 }

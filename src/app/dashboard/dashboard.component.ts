@@ -3,6 +3,7 @@ import { TableData } from '../md/md-table/md-table.component';
 import { LegendItem, ChartType } from '../md/md-chart/md-chart.component';
 
 import * as Chartist from 'chartist';
+import { CommonService } from '../shared/services/common.service';
 
 declare const $: any;
 
@@ -68,8 +69,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       seq2 = 0;
   }
-  // constructor(private navbarTitleService: NavbarTitleService) { }
+  constructor(private commonService: CommonService) { }
   public ngOnInit() {
+      this.commonService.getCommonData().subscribe(
+        (data: any) => {
+          window.sessionStorage.setItem('commonValues', JSON.stringify(data));
+        },
+        (error) => {
+
+        }
+      )
+
       this.tableData = {
           headerRow: ['ID', 'Name', 'Salary', 'State', 'City'],
           dataRows: [

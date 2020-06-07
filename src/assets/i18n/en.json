@@ -13,6 +13,7 @@
         "userTitle":"Users",
         "newUserBtn":"New User",
         "category": "User Category",
-        "dob": "DOB"
+        "dob": "DOB",
+        "schoolName": "School Name"
     }
 }

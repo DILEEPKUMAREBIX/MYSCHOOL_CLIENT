@@ -6,6 +6,7 @@ import { SchoolService } from './school.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { School } from '../shared/models/school.interface';
+import { CommonService } from '../shared/services/common.service';
 
 @Component({
   selector: 'app-school',
@@ -18,28 +19,27 @@ export class SchoolComponent implements OnInit {
   closeResult;
   schools: any = [];
   deletionSchool: any;
+  typeValues: any = [];
 
 
   schoolGroup: FormGroup;
 
-  constructor(public dialog: MatDialog,
-    private modalService: NgbModal,
-    private translate: TranslateService,
+  constructor(public dialog: MatDialog, private modalService: NgbModal, private translate: TranslateService,
     private schoolService: SchoolService,
     private toastr: ToastrService,
+    private commonService: CommonService,
     private fb: FormBuilder
   ) {
     translate.setDefaultLang('en');
   }
 
   ngOnInit() {
+    this.typeValues = this.commonService.getCommonValue('SCHTYPE','');
+    console.log(this.typeValues);
     this.schoolGroup = this.fb.group({
       schoolId: [null],
       name: ['', [Validators.required]],
-      typeId: ['', [Validators.required]],
-      anniversary: ['', [Validators.required]],
-      createdBy: ['', Validators.required],
-      createdDate: ['', Validators.required],
+      typeId: [0, [Validators.required]],
       address: this.fb.group({
         houseNum: ['', [Validators.required]],
         street: ['', Validators.required],
@@ -48,9 +48,7 @@ export class SchoolComponent implements OnInit {
         mandal: ['', Validators.required],
         district: ['', Validators.required],
         state: ['', Validators.required],
-        pincode: ['', Validators.required],
-        createdBy: ['', Validators.required],
-        createdDate: ['', Validators.required]
+        pincode: ['', Validators.required]
       })
     });
     this.loadSchools();
@@ -83,22 +81,6 @@ export class SchoolComponent implements OnInit {
     );
   }
 
-  openDelete(deleteConfirm, school) {
-    this.deletionSchool = school;
-    this.modalService
-      .open(deleteConfirm, {
-        ariaLabelledBy: "modal-basic-title"
-      })
-      .result.then(
-        result => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        reason => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
-
   onDeleteConfirmation() {
     this.schoolService.deleteSchool(this.deletionSchool.schoolId).subscribe(
       (data: any) => {
@@ -112,23 +94,14 @@ export class SchoolComponent implements OnInit {
     );
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-  
+
   open(content, type: boolean, school?) {
     this.isNew = type;
     this.manageSchoolHeading = this.isNew
       ? "Create School"
       : "Update School";
     if (this.isNew) {
-
+      this.schoolGroup.reset();
     } else {
       this.schoolGroup.patchValue(school, { onlySelf: true });
     }
@@ -147,4 +120,29 @@ export class SchoolComponent implements OnInit {
       );
   }
 
+  openDelete(deleteConfirm, school) {
+    this.deletionSchool = school;
+    this.modalService
+      .open(deleteConfirm, {
+        ariaLabelledBy: "modal-basic-title"
+      })
+      .result.then(
+        result => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        reason => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return "by pressing ESC";
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return "by clicking on a backdrop";
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 }
