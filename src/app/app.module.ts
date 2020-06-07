@@ -69,6 +69,7 @@ import { UsersComponent } from './users/user.component';
     AuthLayoutComponent,
     SchoolComponent,
     UsersComponent
+    
   ],
   bootstrap: [AppComponent]
 })

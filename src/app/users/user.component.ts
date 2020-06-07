@@ -4,46 +4,147 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from './user.service';
 import { ToastrService } from 'ngx-toastr';
+import { Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html'
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.css']
 })
 export class UsersComponent implements OnInit {
 
   schoolObj: any = {};
-  isNew
-  manageSchoolHeading
-  animal: string;
-  name: string;
+  isNew: boolean;
+  manageUserHeading: string;
   closeResult;
   users: any = [];
-  deletionSchool: any;
-  organisations: any = [];
-  departments: any = [];
+  deletionUser: any;
 
-  constructor(public dialog: MatDialog, private modalService: NgbModal, private translate: TranslateService,
+  selectedFiles: FileList;
+  currentFileUpload: File;
+
+  userGroup: FormGroup;
+  constructor(public dialog: MatDialog,
+    private modalService: NgbModal,
+    private translate: TranslateService,
     private usersService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private fb: FormBuilder
   ) {
     translate.setDefaultLang('en');
   }
 
+  ngOnInit() {
+    this.userGroup = this.fb.group({
+      userId: [null],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      fatherName: ['', Validators.required],
+      motherName: ['', Validators.required],
+      userName: ['', Validators.required],
+      password: ['', Validators.required],
+      email: ['', Validators.required],
+      phone: ['', Validators.required],
+      roles: ['', Validators.required],
+      permissions: ['', Validators.required],
+      dateOfBirth: ['', Validators.required],
+      joiningDate: ['', Validators.required],
+      endingDate: ['', Validators.required],
+      schoolId: ['', Validators.required],
+      categoryId: ['', Validators.required],
+      createdBy: ['', Validators.required],
+      createdDate: ['', Validators.required],
+      address: this.fb.group({
+        houseNum: ['', [Validators.required]],
+        street: ['', Validators.required],
+        village: ['', Validators.required],
+        landmark: ['', Validators.required],
+        mandal: ['', Validators.required],
+        district: ['', Validators.required],
+        state: ['', Validators.required],
+        pincode: ['', Validators.required],
+        createdBy: ['', Validators.required],
+        createdDate: ['', Validators.required]
+      })
+    });
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.usersService.getAllUsers().subscribe(
+      data => {
+        this.users = data;
+      },
+      error => { }
+    );
+  }
+
+  saveOrUpdate() {
+    console.log(this.userGroup.value);
+    this.usersService.createUser(this.userGroup.value).subscribe(
+      (data: any) => {
+        console.log(data);
+        this.modalService.dismissAll("on success");
+        this.toastr.success('user created/updated', 'Success');
+        this.loadUsers();
+        this.userGroup.reset();
+      },
+      (error: any) => {
+        console.log(error);
+        this.modalService.dismissAll("on fail");
+        this.toastr.error('Error in creating user', 'Error');
+      }
+    );
+  }
+
+  openDelete(deleteConfirm, user) {
+    this.deletionUser = user;
+    this.modalService
+      .open(deleteConfirm, {
+        ariaLabelledBy: "modal-basic-title"
+      })
+      .result.then(
+        result => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        reason => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
+  onDeleteConfirmation() {
+    this.usersService.deleteUser(this.deletionUser.userId).subscribe(
+      (data: any) => {
+        this.loadUsers();
+        this.modalService.dismissAll("on fail");
+        this.toastr.success('User Deleted', 'Success');
+      },
+      error => {
+        this.modalService.dismissAll("on fail");
+      }
+    );
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return "by pressing ESC";
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return "by clicking on a backdrop";
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
   open(content, type: boolean, user?) {
     this.isNew = type;
-    this.manageSchoolHeading = this.isNew
-      ? "Create SMS user"
-      : "Update SMS user";
+    this.manageUserHeading = this.isNew
+      ? "Create User"
+      : "Update User";
     if (this.isNew) {
-      this.clearSchool();
-      if (this.organisations.length > 0)
-        this.schoolObj["organizationId"] = this.organisations[0].id;
 
-      if (this.departments.length > 0)
-        this.schoolObj["departmentId"] = this.departments[0].departmentId;
     } else {
-      this.updateSchoolFields(user);
+      this.userGroup.patchValue(user, { onlySelf: true });
     }
     this.modalService
       .open(content, {
@@ -60,106 +161,25 @@ export class UsersComponent implements OnInit {
       );
   }
 
-  ngOnInit() {
-    this.loadSchools();
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
   }
 
-  updateSchoolFields(user) {
-    this.schoolObj["schoolId"] = user.schoolId;
-    this.schoolObj["schoolNameAr"] = user.schoolNameAr;
-    this.schoolObj["schoolNameEng"] = user.schoolNameEng;
-    this.schoolObj["organizationId"] = user.organizationId;
-    this.schoolObj["departmentId"] = user.departmentId;
-    this.schoolObj["recordStatus"] = user.recordStatus;
+  upload() {
+    
 
-  }
+    this.currentFileUpload = this.selectedFiles.item(0);
+    this.usersService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
+       if (event instanceof HttpResponse) {
+        console.log('File is completely uploaded!');
+      }
+      this.loadUsers();
+    });
 
-  clearSchool() {
-    this.schoolObj["schoolId"] = '';
-    this.schoolObj["schoolNameAr"] = '';
-    this.schoolObj["schoolNameEng"] = '';
-    this.schoolObj["organizationId"] = '';
-    this.schoolObj["recordStatus"] = '';
-    this.schoolObj["departmentId"] = '';
-  }
-
-
-  openDelete(deleteConfirm, user) {
-    this.deletionSchool = user;
-    this.modalService
-      .open(deleteConfirm, {
-        ariaLabelledBy: "modal-basic-title"
-      })
-      .result.then(
-        result => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        reason => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-
-  onDeleteConfirmation() {
-    // this.schoolService.deleteSchool(this.deletionSchool.schoolId).subscribe(
-    //   (data: any) => {
-    //     this.loadSchools();
-    //     this.modalService.dismissAll("on fail");
-    //     this.toastr.success('User Deleted', 'Success');
-    //   },
-    //   error => {
-    //     this.modalService.dismissAll("on fail");
-    //   }
-    // );
+    this.selectedFiles = undefined;
   }
 
   useLanguage(language: string) {
     this.translate.use(language);
-  }
-
-  loadSchools() {
-    this.usersService.getAllUsers().subscribe(
-      data => {
-        this.users = data;
-      },
-      error => { }
-    );
-  }
-
-  saveOrUpdate() {
-    if (this.schoolObj['organizationId'] == null || this.schoolObj['organizationId'] == undefined) {
-      this.toastr.error('Organisation is mandotary to save', 'Error');
-      return;
-    }
-
-    if (this.schoolObj['departmentId'] == null || this.schoolObj['departmentId'] == undefined) {
-      this.toastr.error('Department is mandotary to save', 'Error');
-      return;
-    }
-
-    this.schoolObj['recordStatus'] = 1;
-    // this.schoolService.createSchool(this.schoolObj).subscribe(
-    //   (data: any) => {
-    //     console.log(data);
-    //     this.modalService.dismissAll("on success");
-    //     this.toastr.success('user created/updated', 'Success');
-    //     this.loadSchools();
-    //   },
-    //   (error: any) => {
-    //     console.log(error);
-    //     this.modalService.dismissAll("on fail");
-    //     this.toastr.error('Error in creating user', 'Error');
-    //   }
-    // );
   }
 }
