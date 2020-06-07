@@ -22,7 +22,9 @@ export class SchoolComponent implements OnInit {
 
   schoolGroup: FormGroup;
 
-  constructor(public dialog: MatDialog, private modalService: NgbModal, private translate: TranslateService,
+  constructor(public dialog: MatDialog,
+    private modalService: NgbModal,
+    private translate: TranslateService,
     private schoolService: SchoolService,
     private toastr: ToastrService,
     private fb: FormBuilder
@@ -35,6 +37,9 @@ export class SchoolComponent implements OnInit {
       schoolId: [null],
       name: ['', [Validators.required]],
       typeId: ['', [Validators.required]],
+      anniversary: ['', [Validators.required]],
+      createdBy: ['', Validators.required],
+      createdDate: ['', Validators.required],
       address: this.fb.group({
         houseNum: ['', [Validators.required]],
         street: ['', Validators.required],
@@ -43,7 +48,9 @@ export class SchoolComponent implements OnInit {
         mandal: ['', Validators.required],
         district: ['', Validators.required],
         state: ['', Validators.required],
-        pincode: ['', Validators.required]
+        pincode: ['', Validators.required],
+        createdBy: ['', Validators.required],
+        createdDate: ['', Validators.required]
       })
     });
     this.loadSchools();
@@ -76,6 +83,22 @@ export class SchoolComponent implements OnInit {
     );
   }
 
+  openDelete(deleteConfirm, school) {
+    this.deletionSchool = school;
+    this.modalService
+      .open(deleteConfirm, {
+        ariaLabelledBy: "modal-basic-title"
+      })
+      .result.then(
+        result => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        reason => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
   onDeleteConfirmation() {
     this.schoolService.deleteSchool(this.deletionSchool.schoolId).subscribe(
       (data: any) => {
@@ -89,14 +112,23 @@ export class SchoolComponent implements OnInit {
     );
   }
 
-
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return "by pressing ESC";
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return "by clicking on a backdrop";
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+  
   open(content, type: boolean, school?) {
     this.isNew = type;
     this.manageSchoolHeading = this.isNew
       ? "Create School"
       : "Update School";
     if (this.isNew) {
-      
+
     } else {
       this.schoolGroup.patchValue(school, { onlySelf: true });
     }
@@ -115,29 +147,4 @@ export class SchoolComponent implements OnInit {
       );
   }
 
-  openDelete(deleteConfirm, school) {
-    this.deletionSchool = school;
-    this.modalService
-      .open(deleteConfirm, {
-        ariaLabelledBy: "modal-basic-title"
-      })
-      .result.then(
-        result => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        reason => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 }

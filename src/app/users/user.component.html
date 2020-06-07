@@ -12,6 +12,10 @@
               <button mat-raised-button class="btn btn-behance"
                 (click)="open(content, true)">{{ 'myschool.newUserBtn' | translate }}
               </button>
+              <label class="btn btn-default">
+                <input type="file" (change)="selectFile($event)" >
+              </label>
+              <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button>
             </div>
             <div class="material-datatables">
               <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0"
@@ -32,10 +36,12 @@
                     <td>{{user?.address?.village}}</td>
                     <td>{{user?.address?.mandal}}</td>
                     <td>{{user?.category?.name}}</td>
-                    <td>{{user?.dateOfBirth | date}}</td>
+                    <td>{{user?.dateOfBirth | date }}</td>
                     <td class="">
-                      <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit" (click)="open(content, false, user)"><i class="material-icons">dvr</i></a>
-                      <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove" (click)="openDelete(deleteConfirm, user)"><i class="material-icons">close</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit"
+                        (click)="open(content, false, user)"><i class="material-icons">dvr</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove"
+                        (click)="openDelete(deleteConfirm, user)"><i class="material-icons">close</i></a>
                     </td>
                   </tr>
                 </tbody>
@@ -52,57 +58,193 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{manageSchoolHeading}}</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{manageUserHeading}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <label for="inputCity">{{ 'sms.selectOrganisation' | translate }}</label>
-        <select class="form-control" id="sel1" [ngModelOptions]="{standalone: true}"
-          [(ngModel)]="schoolObj['organizationId']">
-          <option *ngFor="let org of organisations" [value]="org.id"> {{org.orgNameEng}}</option>
-        </select>
+    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="userGroup">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">irstName</label>
+            <input type="text" class="form-control" formControlName="firstName">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">LastName</label>
+            <input type="text" class="form-control" formControlName="lastName">
+          </div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="inputCity">{{ 'sms.departmentTitle' | translate }}</label>
-        <select class="form-control" id="sel1" [ngModelOptions]="{standalone: true}"
-          [(ngModel)]="schoolObj['departmentId']">
-          <option *ngFor="let loc of departments" [value]="loc.departmentId"> {{loc.departmentNameEng}}</option>
-        </select>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">FatherName</label>
+            <input type="text" class="form-control" formControlName="fatherName">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">MotherName</label>
+            <input type="text" class="form-control" formControlName="motherName">
+          </div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="inputAddress">
-          <b> {{ 'sms.schoolNameEng' | translate }}</b>
-        </label>
-        <input type="text" class="form-control" id="inputAddress" [(ngModel)]="schoolObj['schoolNameEng']"
-          [ngModelOptions]="{standalone: true}">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">UserName</label>
+            <input type="text" class="form-control" formControlName="userName">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Password</label>
+            <input type="text" class="form-control" formControlName="password">
+          </div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="inputAddress1">
-          <b> {{ 'sms.schoolNameAr' | translate }}</b>
-        </label>
-        <input type="text" class="form-control" id="inputAddress1" [(ngModel)]="schoolObj['schoolNameAr']"
-          [ngModelOptions]="{standalone: true}">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Email</label>
+            <input type="text" class="form-control" formControlName="email">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Phone</label>
+            <input type="text" class="form-control" formControlName="phone">
+          </div>
+        </div>
       </div>
-
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Roles</label>
+            <input type="text" class="form-control" formControlName="roles">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Permissions</label>
+            <input type="text" class="form-control" formControlName="permissions">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">DateOfBirth</label>
+            <input type="date" class="form-control" formControlName="dateOfBirth">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">JoiningDate</label>
+            <input type="date" class="form-control" formControlName="joiningDate">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">EndingDate</label>
+            <input type="date" class="form-control" formControlName="endingDate">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">School</label>
+            <input type="text" class="form-control" formControlName="schoolId">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Category</label>
+            <input type="text" class="form-control" formControlName="categoryId">
+          </div>
+        </div>
+      </div>
+      <div formGroupName="address">
+        <h5 class="card-title">Address</h5>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label class="bmd-label-floating">House Number</label>
+              <input type="text" class="form-control" formControlName="houseNum">
+              <div class="error text-danger" *ngIf="userGroup.get('address').get('houseNum').hasError('required') 
+                && userGroup.get('address').get('houseNum').touched">
+                House Number is required
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="bmd-label-floating">Street</label>
+              <input type="text" class="form-control" formControlName="street">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="bmd-label-floating">Village</label>
+              <input type="email" class="form-control" formControlName="village">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="bmd-label-floating">Landmark</label>
+              <input type="text" class="form-control" formControlName="landmark">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="bmd-label-floating">Mandal</label>
+              <input type="text" class="form-control" formControlName="mandal">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="bmd-label-floating">District</label>
+              <input type="text" class="form-control" formControlName="district">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="bmd-label-floating">State</label>
+              <input type="text" class="form-control" formControlName="state">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="bmd-label-floating">Postal Code</label>
+              <input type="text" class="form-control" formControlName="pincode">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <app-address></app-address> -->
     </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
+    <!-- <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button> -->
+    <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="saveOrUpdate()">save
+      Profile</button>
   </div>
 </ng-template>
 
 
 <ng-template #deleteConfirm let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-title"> {{ 'sms.schoolDelete' | translate }}</h4>
+    <h4 class="modal-title" id="modal-title"> {{ 'Delete User' | translate }}</h4>
     <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -110,7 +252,7 @@
   <div class="modal-body">
     <p>
       <strong>Are you sure you want to delete
-        <span class="text-primary">User: {{deletionSchool.schoolNameAr}}
+        <span class="text-primary">User: {{deletionUser.firstName}}
         </span> ?</strong>
     </p>
     <p>All information associated with this will be permanently deleted.
