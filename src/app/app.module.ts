@@ -25,6 +25,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UsersComponent } from './users/user.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { EventsComponent } from './events/events.component';
 
 @NgModule({
   exports: [
@@ -69,8 +70,9 @@ import { NgxSpinnerModule } from "ngx-spinner";
     AdminLayoutComponent,
     AuthLayoutComponent,
     SchoolComponent,
-    UsersComponent
-    
+    UsersComponent,
+    EventsComponent
+
   ],
   bootstrap: [AppComponent]
 })

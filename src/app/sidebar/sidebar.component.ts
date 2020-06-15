@@ -58,6 +58,11 @@ export const ROUTES: RouteInfo[] = [{
     type: 'link',
     icontype: 'apps'
 }, {
+    path: '/events',
+    title: 'Events',
+    type: 'link',
+    icontype: 'apps'
+},{
     path: '/tables',
     title: 'Tables',
     type: 'sub',
