@@ -13,7 +13,7 @@
                 (click)="open(content, true)">{{ 'myschool.newUserBtn' | translate }}
               </button>
               <label class="btn btn-default">
-                <input type="file" (change)="selectFile($event)" >
+                <input type="file" (change)="selectFile($event)">
               </label>
               <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button>
             </div>
@@ -63,89 +63,142 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body ScrollStyle">
     <form novalidate (ngSubmit)="onSubmit()" [formGroup]="userGroup">
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label class="bmd-label-floating">irstName</label>
+            <label class="bmd-label-floating">FirstName</label>
             <input type="text" class="form-control" formControlName="firstName">
+            <div class="error text-danger" *ngIf="userGroup.get('firstName').hasError('required') 
+            && userGroup.get('firstName').touched">
+              Please Enter FirstName
+            </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label class="bmd-label-floating">LastName</label>
             <input type="text" class="form-control" formControlName="lastName">
+            <div class="error text-danger" *ngIf="userGroup.get('lastName').hasError('required') 
+            && userGroup.get('lastName').touched">
+              Please Enter LastName
+            </div>
           </div>
         </div>
+
       </div>
+
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label class="bmd-label-floating">FatherName</label>
             <input type="text" class="form-control" formControlName="fatherName">
+            <div class="error text-danger" *ngIf="userGroup.get('fatherName').hasError('required') 
+            && userGroup.get('fatherName').touched">
+              Please Enter FatherName
+            </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label class="bmd-label-floating">MotherName</label>
             <input type="text" class="form-control" formControlName="motherName">
+            <div class="error text-danger" *ngIf="userGroup.get('motherName').hasError('required') 
+            && userGroup.get('motherName').touched">
+              Please Enter MotherName
+            </div>
           </div>
         </div>
+
       </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">Gender</label>
+            <select id="inputState" class="form-control" formControlName="genderId">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of Gender" [value]='value.id'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="userGroup.get('genderId').hasError('required') 
+            && userGroup.get('genderId').touched">
+              Please Select Gender
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
           <div class="form-group">
             <label class="bmd-label-floating">UserName</label>
             <input type="text" class="form-control" formControlName="userName">
+            <div class="error text-danger" *ngIf="userGroup.get('userName').hasError('required') 
+            && userGroup.get('userName').touched">
+              Please Enter UserName
+            </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-group">
             <label class="bmd-label-floating">Password</label>
             <input type="text" class="form-control" formControlName="password">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="bmd-label-floating">Email</label>
-            <input type="text" class="form-control" formControlName="email">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="bmd-label-floating">Phone</label>
-            <input type="text" class="form-control" formControlName="phone">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="bmd-label-floating">Roles</label>
-            <input type="text" class="form-control" formControlName="roles">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label class="bmd-label-floating">Permissions</label>
-            <input type="text" class="form-control" formControlName="permissions">
+            <div class="error text-danger" *ngIf="userGroup.get('password').hasError('required') 
+            && userGroup.get('password').touched">
+              Please Enter Password
+            </div>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-4">
           <div class="form-group">
+            <label class="bmd-label-floating">Email</label>
+            <input type="text" class="form-control" formControlName="email">
+            <div class="error text-danger" *ngIf="userGroup.get('email').hasError('required') 
+            && userGroup.get('email').touched">
+              Please Enter Email
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">Phone</label>
+            <input type="text" class="form-control" formControlName="phone">
+            <div class="error text-danger" *ngIf="userGroup.get('phone').hasError('required') 
+            && userGroup.get('phone').touched">
+              Please Enter Phone Number
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">Roles</label>
+            <input type="text" class="form-control" formControlName="roles">
+            <div class="error text-danger" *ngIf="userGroup.get('roles').hasError('required') 
+            && userGroup.get('roles').touched">
+              Please Enter At least one Role
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
             <label class="bmd-label-floating">DateOfBirth</label>
             <input type="date" class="form-control" formControlName="dateOfBirth">
+            <div class="error text-danger" *ngIf="userGroup.get('dateOfBirth').hasError('required') 
+            && userGroup.get('dateOfBirth').touched">
+              Please Enter DateOfBirth
+            </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label class="bmd-label-floating">JoiningDate</label>
             <input type="date" class="form-control" formControlName="joiningDate">
+            <div class="error text-danger" *ngIf="userGroup.get('joiningDate').hasError('required') 
+            && userGroup.get('joiningDate').touched">
+              Please Enter JoiningDate
+            </div>
           </div>
         </div>
         <div class="col-md-4">
@@ -156,16 +209,40 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-group">
-            <label class="bmd-label-floating">School</label>
-            <input type="text" class="form-control" formControlName="schoolId">
+            <label class="bmd-label-floating">Permissions</label>
+            <input type="text" class="form-control" formControlName="permissions">
+            <div class="error text-danger" *ngIf="userGroup.get('permissions').hasError('required') 
+            && userGroup.get('permissions').touched">
+              Please Enter Permissions
+            </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-group">
-            <label class="bmd-label-floating">Category</label>
-            <input type="text" class="form-control" formControlName="categoryId">
+            <label class="bmd-label-floating">School</label>
+            <select id="inputState" class="form-control" formControlName="schoolId">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of SchoolsList" [value]='value.schoolId'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="userGroup.get('schoolId').hasError('required') 
+            && userGroup.get('schoolId').touched">
+              Please Select one School
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">User Type</label>
+            <select id="inputState" class="form-control" formControlName="categoryId">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of typeValues" [value]='value.id'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="userGroup.get('categoryId').hasError('required') 
+            && userGroup.get('categoryId').touched">
+              Please Select Releted User Type
+            </div>
           </div>
         </div>
       </div>
@@ -186,26 +263,42 @@
             <div class="form-group">
               <label class="bmd-label-floating">Street</label>
               <input type="text" class="form-control" formControlName="street">
+              <div class="error text-danger" *ngIf="userGroup.get('address').get('street').hasError('required') 
+              && userGroup.get('address').get('street').touched">
+                Street name is required
+              </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label class="bmd-label-floating">Village</label>
-              <input type="email" class="form-control" formControlName="village">
+              <label class="bmd-label-floating">Landmark</label>
+              <input type="text" class="form-control" formControlName="landmark">
+              <div class="error text-danger" *ngIf="userGroup.get('address').get('landmark').hasError('required') 
+              && userGroup.get('address').get('landmark').touched">
+                Landmark is required
+              </div>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label class="bmd-label-floating">Landmark</label>
-              <input type="text" class="form-control" formControlName="landmark">
+              <label class="bmd-label-floating">Village</label>
+              <input type="email" class="form-control" formControlName="village">
+              <div class="error text-danger" *ngIf="userGroup.get('address').get('village').hasError('required') 
+              && userGroup.get('address').get('village').touched">
+                Village is required
+              </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="bmd-label-floating">Mandal</label>
               <input type="text" class="form-control" formControlName="mandal">
+              <div class="error text-danger" *ngIf="userGroup.get('address').get('mandal').hasError('required') 
+              && userGroup.get('address').get('mandal').touched">
+                Mandal is required
+              </div>
             </div>
           </div>
         </div>
@@ -214,18 +307,30 @@
             <div class="form-group">
               <label class="bmd-label-floating">District</label>
               <input type="text" class="form-control" formControlName="district">
+              <div class="error text-danger" *ngIf="userGroup.get('address').get('district').hasError('required') 
+              && userGroup.get('address').get('district').touched">
+                District is required
+              </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label class="bmd-label-floating">State</label>
               <input type="text" class="form-control" formControlName="state">
+              <div class="error text-danger" *ngIf="userGroup.get('address').get('state').hasError('required') 
+              && userGroup.get('address').get('state').touched">
+                State is required
+              </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label class="bmd-label-floating">Postal Code</label>
               <input type="text" class="form-control" formControlName="pincode">
+              <div class="error text-danger" *ngIf="userGroup.get('address').get('pincode').hasError('required') 
+              && userGroup.get('address').get('pincode').touched">
+                Postal Code is required
+              </div>
             </div>
           </div>
         </div>
@@ -236,8 +341,8 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
     <!-- <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button> -->
-    <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="saveOrUpdate()">save
-      Profile</button>
+    <button mat-raised-button type="submit" class="btn btn-rose pull-right"
+      (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
   </div>
 </ng-template>
 

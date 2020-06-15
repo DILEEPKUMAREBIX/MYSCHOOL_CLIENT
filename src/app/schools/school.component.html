@@ -50,8 +50,6 @@
   </div>
 </div>
 
-
-
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">{{manageSchoolHeading}}</h4>
@@ -62,64 +60,93 @@
   <div class="modal-body">
     <form novalidate (ngSubmit)="onSubmit()" [formGroup]="schoolGroup">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-group">
             <label class="bmd-label-floating">Name</label>
             <input type="text" class="form-control" formControlName="name">
+            <div class="error text-danger" *ngIf="schoolGroup.get('name').hasError('required') && 
+                schoolGroup.get('name').touched">
+              Please Enter School Name
+            </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-group">
-            <!-- <label class="bmd-label-floating">type</label> -->
-            <!-- <input type="text" class="form-control" formControlName="typeId"> -->
-            <!-- <select class="custom-select" id="inputGroupSelect01">
-              <option *ngFor="let value of typeValues" [value]='value.id'>{{value.name}}</option>
-            </select> -->
             <label class="bmd-label-floating">type</label>
-              <select id="inputState" class="form-control" formControlName="typeId">
-                <option selected [value]='0'>Choose...</option>
-                <option *ngFor="let value of typeValues" [value]='value.id'>{{value.name}}</option>
-              </select>
+            <select id="inputState" class="form-control" formControlName="typeId">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of typeValues" [value]='value.id'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="schoolGroup.get('typeId').hasError('required') && 
+                schoolGroup.get('typeId').touched">
+              Please Select SchoolType
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">Anniversary</label>
+            <input type="date" class="form-control" formControlName="anniversary">
+            <div class="error text-danger" *ngIf="schoolGroup.get('anniversary').hasError('required') && 
+                schoolGroup.get('anniversary').touched">
+              Please Seclect Anniversary
+            </div>
           </div>
         </div>
       </div>
       <div formGroupName="address">
         <h5 class="card-title">Address</h5>
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="bmd-label-floating">House Number</label>
               <input type="text" class="form-control" formControlName="houseNum">
-              <div class="error text-danger"
-                *ngIf="schoolGroup.get('address').get('houseNum').hasError('required') && schoolGroup.get('address').get('houseNum').touched">
+              <div class="error text-danger" *ngIf="schoolGroup.get('address').get('houseNum').hasError('required') && 
+                schoolGroup.get('address').get('houseNum').touched">
                 House Number is required
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="form-group">
               <label class="bmd-label-floating">Street</label>
               <input type="text" class="form-control" formControlName="street">
+              <div class="error text-danger" *ngIf="schoolGroup.get('address').get('street').hasError('required') && 
+              schoolGroup.get('address').get('street').touched">
+                Street Name is required
+              </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label class="bmd-label-floating">Village</label>
-              <input type="email" class="form-control" formControlName="village">
+              <label class="bmd-label-floating">Landmark</label>
+              <input type="text" class="form-control" formControlName="landmark">
+              <div class="error text-danger" *ngIf="schoolGroup.get('address').get('landmark').hasError('required') && 
+              schoolGroup.get('address').get('landmark').touched">
+                Landmark is required
+              </div>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label class="bmd-label-floating">Landmark</label>
-              <input type="text" class="form-control" formControlName="landmark">
+              <label class="bmd-label-floating">Village</label>
+              <input type="email" class="form-control" formControlName="village">
+              <div class="error text-danger" *ngIf="schoolGroup.get('address').get('village').hasError('required') && 
+              schoolGroup.get('address').get('village').touched">
+                Village is required
+              </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="bmd-label-floating">Mandal</label>
               <input type="text" class="form-control" formControlName="mandal">
+              <div class="error text-danger" *ngIf="schoolGroup.get('address').get('mandal').hasError('required') && 
+              schoolGroup.get('address').get('mandal').touched">
+                Mandal is required
+              </div>
             </div>
           </div>
         </div>
@@ -128,18 +155,30 @@
             <div class="form-group">
               <label class="bmd-label-floating">District</label>
               <input type="text" class="form-control" formControlName="district">
+              <div class="error text-danger" *ngIf="schoolGroup.get('address').get('district').hasError('required') && 
+              schoolGroup.get('address').get('district').touched">
+                District is required
+              </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label class="bmd-label-floating">State</label>
               <input type="text" class="form-control" formControlName="state">
+              <div class="error text-danger" *ngIf="schoolGroup.get('address').get('state').hasError('required') && 
+              schoolGroup.get('address').get('state').touched">
+                State is required
+              </div>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label class="bmd-label-floating">Postal Code</label>
               <input type="text" class="form-control" formControlName="pincode">
+              <div class="error text-danger" *ngIf="schoolGroup.get('address').get('pincode').hasError('required') && 
+              schoolGroup.get('address').get('pincode').touched">
+                Postal Code is required
+              </div>
             </div>
           </div>
         </div>
@@ -149,7 +188,8 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
     <!-- <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button> -->
-    <button mat-raised-button type="submit" class="btn btn-rose pull-right" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
+    <button mat-raised-button type="submit" class="btn btn-rose pull-right"
+      (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
   </div>
 </ng-template>
 

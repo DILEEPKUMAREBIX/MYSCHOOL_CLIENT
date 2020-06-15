@@ -13,6 +13,7 @@ export class CommonService {
     commonValues: any = [];
     constructor(private http: HttpClient) { }
 
+   
     getCommonValue(group: string, value: string) {
         if (this.commonValues.length == 0) {
             this.commonValues = JSON.parse(window.sessionStorage.getItem('commonValues'));
@@ -38,4 +39,7 @@ export class CommonService {
         return this.http.get(this.url + 'commonvalues');
     }
 
+    getSchoolsList() {
+        return this.http.get(this.url + 'schoolnames');
+    }
 }

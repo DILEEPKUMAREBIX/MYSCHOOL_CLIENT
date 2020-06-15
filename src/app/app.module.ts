@@ -24,7 +24,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UsersComponent } from './users/user.component';
-
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   exports: [
@@ -61,7 +61,8 @@ import { UsersComponent } from './users/user.component';
       }
     }),
     ToastrModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule
   ],
   declarations: [
     AppComponent,
