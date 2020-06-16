@@ -9,3 +9,9 @@
 ::ng-deep .modal-dialog .modal-header {
     background-color: #ea2c6d;
 }
+
+.ScrollStyle
+{
+    max-height: 300px;
+    overflow-y: scroll;
+}

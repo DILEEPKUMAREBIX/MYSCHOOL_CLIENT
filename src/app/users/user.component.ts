@@ -4,8 +4,11 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from './user.service';
 import { ToastrService } from 'ngx-toastr';
-import { Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
+import { CommonService } from '../shared/services/common.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SchoolService } from '../schools/school.service';
 
 @Component({
   selector: 'app-user',
@@ -20,7 +23,9 @@ export class UsersComponent implements OnInit {
   closeResult;
   users: any = [];
   deletionUser: any;
-
+  typeValues: any = [];
+  Gender: any = [];
+  SchoolsList: any = [];
   selectedFiles: FileList;
   currentFileUpload: File;
 
@@ -30,18 +35,26 @@ export class UsersComponent implements OnInit {
     private translate: TranslateService,
     private usersService: UserService,
     private toastr: ToastrService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private commonService: CommonService,
+    private spinner: NgxSpinnerService,
+    private schoolservice:SchoolService
   ) {
     translate.setDefaultLang('en');
   }
 
   ngOnInit() {
+    this.typeValues = this.commonService.getCommonValue('UserCategory', '');
+    this.Gender = this.commonService.getCommonValue('Gender', '');
+    this.getSchools();
+    console.log(this.typeValues);
     this.userGroup = this.fb.group({
       userId: [null],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       fatherName: ['', Validators.required],
       motherName: ['', Validators.required],
+      genderId: ['', Validators.required],
       userName: ['', Validators.required],
       password: ['', Validators.required],
       email: ['', Validators.required],
@@ -70,13 +83,27 @@ export class UsersComponent implements OnInit {
     });
     this.loadUsers();
   }
-
+getSchools(){
+  this.schoolservice.getAllSchools().subscribe(
+    data => {
+    
+      this.SchoolsList = data;
+    },
+    error => {
+      this.spinner.hide();
+    }
+  );
+}
   loadUsers() {
+    this.spinner.show();
     this.usersService.getAllUsers().subscribe(
       data => {
+        this.spinner.hide();
         this.users = data;
       },
-      error => { }
+      error => {
+        this.spinner.hide();
+      }
     );
   }
 
@@ -166,16 +193,14 @@ export class UsersComponent implements OnInit {
   }
 
   upload() {
-    
-
     this.currentFileUpload = this.selectedFiles.item(0);
     this.usersService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
-       if (event instanceof HttpResponse) {
+      if (event instanceof HttpResponse) {
         console.log('File is completely uploaded!');
+        this.toastr.success('file upload successfully', 'Success');
       }
       this.loadUsers();
     });
-
     this.selectedFiles = undefined;
   }
 

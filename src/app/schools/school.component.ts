@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { School } from '../shared/models/school.interface';
 import { CommonService } from '../shared/services/common.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-school',
@@ -28,18 +29,22 @@ export class SchoolComponent implements OnInit {
     private schoolService: SchoolService,
     private toastr: ToastrService,
     private commonService: CommonService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private spinner: NgxSpinnerService
   ) {
     translate.setDefaultLang('en');
   }
 
   ngOnInit() {
-    this.typeValues = this.commonService.getCommonValue('SCHTYPE','');
+    this.typeValues = this.commonService.getCommonValue('SCHTYPE', '');
     console.log(this.typeValues);
     this.schoolGroup = this.fb.group({
       schoolId: [null],
       name: ['', [Validators.required]],
       typeId: [0, [Validators.required]],
+      anniversary: ['', [Validators.required]],
+      createdBy: ['', Validators.required],
+      createdDate: ['', Validators.required],
       address: this.fb.group({
         houseNum: ['', [Validators.required]],
         street: ['', Validators.required],
@@ -48,18 +53,24 @@ export class SchoolComponent implements OnInit {
         mandal: ['', Validators.required],
         district: ['', Validators.required],
         state: ['', Validators.required],
-        pincode: ['', Validators.required]
+        pincode: ['', Validators.required],
+        createdBy: ['', Validators.required],
+        createdDate: ['', Validators.required]
       })
     });
     this.loadSchools();
   }
 
   loadSchools() {
+    this.spinner.show();
     this.schoolService.getAllSchools().subscribe(
       data => {
+        this.spinner.hide();
         this.schools = data;
       },
-      error => { }
+      error => { 
+        this.spinner.hide();
+      }
     );
   }
 
@@ -81,6 +92,22 @@ export class SchoolComponent implements OnInit {
     );
   }
 
+  openDelete(deleteConfirm, school) {
+    this.deletionSchool = school;
+    this.modalService
+      .open(deleteConfirm, {
+        ariaLabelledBy: "modal-basic-title"
+      })
+      .result.then(
+        result => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        reason => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
   onDeleteConfirmation() {
     this.schoolService.deleteSchool(this.deletionSchool.schoolId).subscribe(
       (data: any) => {
@@ -94,6 +121,15 @@ export class SchoolComponent implements OnInit {
     );
   }
 
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return "by pressing ESC";
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return "by clicking on a backdrop";
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
   open(content, type: boolean, school?) {
     this.isNew = type;
@@ -120,29 +156,4 @@ export class SchoolComponent implements OnInit {
       );
   }
 
-  openDelete(deleteConfirm, school) {
-    this.deletionSchool = school;
-    this.modalService
-      .open(deleteConfirm, {
-        ariaLabelledBy: "modal-basic-title"
-      })
-      .result.then(
-        result => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        reason => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 }
