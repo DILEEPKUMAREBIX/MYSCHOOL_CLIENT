@@ -14,11 +14,6 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getAllUsers() {
-    // var reqHeader = new HttpHeaders({
-    //   'Content-Type': 'application/json',
-    //   'Authorization': 'bearer ' + JSON.parse(window.sessionStorage.getItem('token')).access_token
-    // });
-    // return this.http.get(this.url + 'Users', {headers: reqHeader});
     return this.http.get(this.url + 'users');
   }
 

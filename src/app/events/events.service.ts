@@ -21,4 +21,7 @@ export class EventsService {
     return this.http.request(req);
   }
 
+  getAllFiles() {
+    return this.http.get(this.url + 'allfiles');
+  }
 }

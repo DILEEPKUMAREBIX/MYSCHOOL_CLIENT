@@ -47,7 +47,6 @@ export class UsersComponent implements OnInit {
     this.typeValues = this.commonService.getCommonValue('UserCategory', '');
     this.Gender = this.commonService.getCommonValue('Gender', '');
     this.getSchools();
-    console.log(this.typeValues);
     this.userGroup = this.fb.group({
       userId: [null],
       firstName: ['', Validators.required],
@@ -86,11 +85,9 @@ export class UsersComponent implements OnInit {
 getSchools(){
   this.schoolservice.getAllSchools().subscribe(
     data => {
-    
       this.SchoolsList = data;
     },
     error => {
-      this.spinner.hide();
     }
   );
 }

@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { AppComponent } from './app.component';
 
@@ -26,6 +27,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UsersComponent } from './users/user.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { EventsComponent } from './events/events.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { HomeworkComponent } from './homework/homework.component';
 
 @NgModule({
   exports: [
@@ -33,6 +36,8 @@ import { EventsComponent } from './events/events.component';
   ],
   imports: [
     CommonModule,
+    AngularEditorModule,
+    BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     RouterModule.forRoot(AppRoutes, {
@@ -46,14 +51,6 @@ import { EventsComponent } from './events/events.component';
     FixedpluginModule,
     HttpClientModule,
     NgbModule,
-    // TranslateModule.forChild({
-    //   loader: {
-    //     provide: TranslateLoader,
-    //     useFactory: HttpLoaderFactory,
-    //     deps: [HttpClient]
-    //   }
-    // }),
-
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -71,7 +68,8 @@ import { EventsComponent } from './events/events.component';
     AuthLayoutComponent,
     SchoolComponent,
     UsersComponent,
-    EventsComponent
+    EventsComponent,
+    HomeworkComponent
 
   ],
   bootstrap: [AppComponent]
