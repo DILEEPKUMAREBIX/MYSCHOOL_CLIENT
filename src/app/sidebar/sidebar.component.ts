@@ -53,8 +53,8 @@ export const ROUTES: RouteInfo[] = [{
     type: 'link',
     icontype: 'apps'
 }, {
-    path: '/schools4',
-    title: 'Configure School',
+    path: '/homework',
+    title: 'Homework',
     type: 'link',
     icontype: 'apps'
 }, {

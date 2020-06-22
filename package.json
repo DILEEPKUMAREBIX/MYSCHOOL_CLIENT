@@ -30,6 +30,7 @@
     "@angular/platform-browser-dynamic": "8.0.0",
     "@angular/platform-server": "8.0.0",
     "@angular/router": "8.0.0",
+    "@kolkov/angular-editor": "^1.1.2",
     "@ng-bootstrap/ng-bootstrap": "^5.1.4",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
