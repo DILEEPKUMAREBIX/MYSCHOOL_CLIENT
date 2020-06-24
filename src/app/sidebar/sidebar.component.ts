@@ -63,6 +63,16 @@ export const ROUTES: RouteInfo[] = [{
     type: 'link',
     icontype: 'apps'
 },{
+    path: '/holidays',
+    title: 'Holidays',
+    type: 'link',
+    icontype: 'apps'
+}, {
+    path: '/leaves',
+    title: 'Leaves',
+    type: 'link',
+    icontype: 'apps'
+},{
     path: '/tables',
     title: 'Tables',
     type: 'sub',

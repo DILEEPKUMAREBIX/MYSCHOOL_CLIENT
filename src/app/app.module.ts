@@ -29,6 +29,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { EventsComponent } from './events/events.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { HomeworkComponent } from './homework/homework.component';
+import { HolidaysComponent } from './holidays/holidays.component';
+import { LeavesComponent } from './leaves/leaves.component';
 
 @NgModule({
   exports: [
@@ -69,7 +71,9 @@ import { HomeworkComponent } from './homework/homework.component';
     SchoolComponent,
     UsersComponent,
     EventsComponent,
-    HomeworkComponent
+    HomeworkComponent,
+    HolidaysComponent,
+    LeavesComponent
 
   ],
   bootstrap: [AppComponent],

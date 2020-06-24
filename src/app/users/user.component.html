@@ -54,8 +54,6 @@
   </div>
 </div>
 
-
-
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">{{manageUserHeading}}</h4>
@@ -118,7 +116,7 @@
             <label class="bmd-label-floating">Gender</label>
             <select id="genderId" class="form-control" formControlName="genderId">
               <option selected [value]='0'>Choose...</option>
-              <option *ngFor="let value of Gender" [value]='value.id'>{{value.name}}</option>
+              <option *ngFor="let value of gender" [value]='value.id'>{{value.name}}</option>
             </select>
             <div class="error text-danger" *ngIf="userGroup.get('genderId').hasError('required') 
             && userGroup.get('genderId').touched">
@@ -179,7 +177,44 @@
           </div>
         </div>
       </div>
-
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">Caste</label>
+            <select id="casteId" class="form-control" formControlName="casteId">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of casteList" [value]='value.id'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="userGroup.get('casteId').hasError('required') 
+            && userGroup.get('casteId').touched">
+              Please Select Proper Caste  
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">Religion</label>
+            <select id="religionId" class="form-control" formControlName="religionId">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of religionList" [value]='value.id'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="userGroup.get('religionId').hasError('required') 
+            && userGroup.get('religionId').touched">
+              Please Select Religion
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="bmd-label-floating">Aadhaar Number</label>
+            <input type="text" class="form-control" formControlName="idProof">
+            <div class="error text-danger" *ngIf="userGroup.get('idProof').hasError('required') 
+            && userGroup.get('idProof').touched">
+              Please Enter Aadhaar Card Number
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-4">
           <div class="form-group">
@@ -224,7 +259,7 @@
             <label class="bmd-label-floating">School</label>
             <select id="schoolId" class="form-control" formControlName="schoolId">
               <option selected [value]='0'>Choose...</option>
-              <option *ngFor="let value of SchoolsList" [value]='value.schoolId'>{{value.name}}</option>
+              <option *ngFor="let value of schoolsList" [value]='value.schoolId'>{{value.name}}</option>
             </select>
             <div class="error text-danger" *ngIf="userGroup.get('schoolId').hasError('required') 
             && userGroup.get('schoolId').touched">

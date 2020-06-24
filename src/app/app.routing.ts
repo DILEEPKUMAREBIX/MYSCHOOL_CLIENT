@@ -7,6 +7,8 @@ import { SchoolComponent } from './schools/school.component';
 import { UsersComponent } from './users/user.component';
 import { EventsComponent } from './events/events.component';
 import { HomeworkComponent } from './homework/homework.component';
+import { LeavesComponent } from './leaves/leaves.component';
+import { HolidaysComponent } from './holidays/holidays.component';
 
 export const AppRoutes: Routes = [
     {
@@ -32,6 +34,12 @@ export const AppRoutes: Routes = [
     },{
         path: 'homework',
         component: HomeworkComponent
+    },{
+        path: 'leaves',
+        component: LeavesComponent
+    },{
+        path: 'holidays',
+        component: HolidaysComponent
     },{
         path: 'tables',
         loadChildren: './tables/tables.module#TablesModule'

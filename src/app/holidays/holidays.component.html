@@ -1,0 +1,128 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon"><i class="material-icons">assignment</i></div>
+            <h4 class="card-title">Holidays</h4>
+          </div>
+          <div class="card-body">
+            <div class="toolbar">
+              <button mat-raised-button class="btn btn-behance" (click)="open(content, true)">New Holiday
+              </button>
+            </div>
+            <div class="material-datatables">
+              <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0"
+                width="100%" style="width:100%">
+                <thead>
+                  <th>Id</th>
+                  <th>Date</th>
+                  <th>Reason</th>
+                  <th>School</th>
+                  <th>Actions</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let holiday of holidays">
+                    <td>{{holiday.holidayId}}</td>
+                    <td>{{holiday.holidayDate}}</td>
+                    <td>{{holiday.description}}</td>
+                    <td>{{holiday.schoolName.name}}</td>
+
+                    <td class="">
+                      <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit"
+                        (click)="open(content, false, holiday)"><i class="material-icons">dvr</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove"
+                        (click)="openDelete(deleteConfirm, holiday)"><i class="material-icons">close</i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{manageHolidayHeading}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="holidayGroup">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="bmd-label-floating">HolidayDate</label>
+            <input type="date" class="form-control" formControlName="holidayDate">
+            <div class="error text-danger" *ngIf="holidayGroup.get('holidayDate').hasError('required') && 
+            holidayGroup.get('holidayDate').touched">
+              Please Select Date
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="bmd-label-floating">School</label>
+            <select id="schoolIdno" class="form-control" formControlName="schoolIdno">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of schools" [value]='value.schoolId'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="holidayGroup.get('schoolIdno').hasError('required') 
+            && holidayGroup.get('schoolIdno').touched">
+              Please Select one School
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="bmd-label-floating">Reason</label>
+            <input type="text" class="form-control" formControlName="description">
+            <div class="error text-danger" *ngIf="holidayGroup.get('description').hasError('required') && 
+            holidayGroup.get('description').touched">
+              Please Enter Reason
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
+    <button mat-raised-button type="submit" class="btn btn-rose pull-right"
+      (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
+  </div>
+</ng-template>
+
+
+<ng-template #deleteConfirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title"> Delete Holiday</h4>
+    <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <strong>Are you sure you want to delete
+        <span class="text-primary">Holiday: {{deletionleave.description}}
+        </span> ?</strong>
+    </p>
+    <p>All information associated with this will be permanently deleted.
+      <span class="text-danger">This operation can not be undone.</span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="onDeleteConfirmation()">Ok</button>
+  </div>
+</ng-template>
