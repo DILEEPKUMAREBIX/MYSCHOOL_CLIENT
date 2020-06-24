@@ -21,6 +21,10 @@ export class UserService {
     return this.http.post(this.url + 'users', school);
   }
 
+  updateUser(school: any,id:any) {
+    return this.http.put(this.url + 'users/'+id, school);
+  }
+
   deleteUser(id: any) {
     return this.http.delete(this.url + 'users/' + id);
   }

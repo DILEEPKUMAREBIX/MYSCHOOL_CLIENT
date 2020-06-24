@@ -13,16 +13,15 @@ export class SchoolService {
   constructor(private http: HttpClient) { }
 
   getAllSchools() {
-    // var reqHeader = new HttpHeaders({
-    //   'Content-Type': 'application/json',
-    //   'Authorization': 'bearer ' + JSON.parse(window.sessionStorage.getItem('token')).access_token
-    // });
-    // return this.http.get(this.url + 'Schools', {headers: reqHeader});
     return this.http.get(this.url + 'schools');
   }
 
   createSchool(school: any) {
     return this.http.post(this.url + 'schools', school);
+  }
+
+  updateSchool(school: any,id:any) {
+    return this.http.put(this.url + 'schools/'+ id, school);
   }
 
   deleteSchool(id: any) {

@@ -1,0 +1,11 @@
+::ng-deep .my-class .modal-dialog { 
+    max-width: 70%;
+    width: 70%;
+
+    max-height: 50%;
+    height: 50%;
+}
+
+::ng-deep .modal-dialog .modal-header {
+    background-color: #ea2c6d;
+}

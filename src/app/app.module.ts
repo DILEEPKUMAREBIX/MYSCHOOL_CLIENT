@@ -72,7 +72,7 @@ import { HomeworkComponent } from './homework/homework.component';
     HomeworkComponent
 
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
 

@@ -8,77 +8,10 @@
             <h4 class="card-title">HomeWork</h4>
           </div>
           <div class="card-body">
-            <div class="modal-body ">
-              <h4 class="modal-title" id="modal-basic-title">{{manageUserHeading}}</h4>
-              <form novalidate (ngSubmit)="onSubmit()" [formGroup]="homeworkGroup">
-
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">School</label>
-                      <select id="schoolIdno" class="form-control" formControlName="schoolIdno">
-                        <option selected [value]='0'>Choose...</option>
-                        <option *ngFor="let value of schoolsList" [value]='value.schoolId'>{{value.name}}</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Class</label>
-                      <select id="classId" class="form-control" formControlName="classId">
-                        <option selected [value]='0'>Choose...</option>
-                        <option *ngFor="let value of classes" [value]='value.id'>{{value.name}}</option>
-                      </select>
-
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Section</label>
-                      <select id="sectionId" class="form-control" formControlName="sectionId">
-                        <option selected [value]='0'>Choose...</option>
-                        <option *ngFor="let value of sections" [value]='value.id'>{{value.name}}</option>
-                      </select>
-
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Subject</label>
-                      <select id="subjectId" class="form-control" formControlName="subjectId">
-                        <option selected [value]='0'>Choose...</option>
-                        <option *ngFor="let value of subjects" [value]='value.id'>{{value.name}}</option>
-                      </select>
-
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-9">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Description</label>
-                      <angular-editor [placeholder]="'Enter text here...'" formControlName="description" [config]="editorConfig"
-                      ></angular-editor>
-
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label class="bmd-label-floating">Today Date</label>
-                      <input type="date" class="form-control" formControlName="homeWorkDate" name="homeWorkDate"
-                        class="form-control" id="homeWorkDate">
-
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div class="row">
-              <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
-              <!-- <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button> -->
-              <button mat-raised-button type="submit" class="btn btn-rose pull-right"
-                (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
+            <div class="toolbar">
+              <button mat-raised-button class="btn btn-behance"
+                (click)="open(content, true)">Add HomeWork
+              </button>
             </div>
             <div class="material-datatables ">
               <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0"
@@ -90,6 +23,7 @@
                   <th>Section</th>
                   <th>Subject</th>
                   <th>Date</th>
+                  <th>Description</th>
                   <th>Actions</th>
                 </thead>
                 <tbody>
@@ -99,6 +33,7 @@
                     <td>{{homework?.className?.name}}</td>
                     <td>{{homework?.sectionName?.name}}</td>
                     <td>{{homework?.subjectName?.name}}</td>
+                    <!-- <td>{{homework?.description}}</td> -->
                     <td>{{homework?.homeWorkDate | date }}</td>
                     <td class="">
                       <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit"
@@ -117,7 +52,81 @@
   </div>
 </div>
 
-
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{manageUserHeading}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body ScrollStyle">
+    <div class="modal-body ">
+     
+      <form novalidate (ngSubmit)="onSubmit()" [formGroup]="homeworkGroup">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="bmd-label-floating">School</label>
+              <select id="schoolIdno" class="form-control" formControlName="schoolIdno">
+                <option selected [value]='0'>Choose...</option>
+                <option *ngFor="let value of schoolsList" [value]='value.schoolId'>{{value.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="bmd-label-floating">Class</label>
+              <select id="classId" class="form-control" formControlName="classId">
+                <option selected [value]='0'>Choose...</option>
+                <option *ngFor="let value of classes" [value]='value.id'>{{value.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="bmd-label-floating">Section</label>
+              <select id="sectionId" class="form-control" formControlName="sectionId">
+                <option selected [value]='0'>Choose...</option>
+                <option *ngFor="let value of sections" [value]='value.id'>{{value.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="bmd-label-floating">Subject</label>
+              <select id="subjectId" class="form-control" formControlName="subjectId">
+                <option selected [value]='0'>Choose...</option>
+                <option *ngFor="let value of subjects" [value]='value.id'>{{value.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-9">
+            <div class="form-group">
+              <label class="bmd-label-floating">HomeWork</label>
+              <angular-editor [placeholder]="'Enter text here...'" formControlName="description" [config]="editorConfig"
+              ></angular-editor>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="bmd-label-floating">Today Date</label>
+              <input type="date" class="form-control" formControlName="homeWorkDate" name="homeWorkDate"
+                class="form-control" id="homeWorkDate">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
+      <button mat-raised-button type="submit" class="btn btn-rose pull-right"
+        (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}
+      </button>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #deleteConfirm let-modal>
   <div class="modal-header">
@@ -141,3 +150,7 @@
     <button type="button" class="btn btn-danger" (click)="onDeleteConfirmation()">Ok</button>
   </div>
 </ng-template>
+
+
+
+
