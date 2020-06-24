@@ -26,6 +26,7 @@ export class HomeworkComponent implements OnInit {
   deletionHomework: any;
   closeResult;
   manageUserHeading: string;
+ 
 
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -226,6 +227,4 @@ export class HomeworkComponent implements OnInit {
         }
       );
   }
-
- 
 }

@@ -15,7 +15,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./school.component.css']
 })
 export class SchoolComponent implements OnInit {
-  isNew: boolean;
+  isNew: boolean=true;
   manageSchoolHeading: string;
   closeResult;
   schools: any = [];
@@ -46,6 +46,7 @@ export class SchoolComponent implements OnInit {
       createdBy: ['', Validators.required],
       createdDate: ['', Validators.required],
       address: this.fb.group({
+        addressId:[],
         houseNum: ['', [Validators.required]],
         street: ['', Validators.required],
         village: ['', Validators.required],
@@ -76,11 +77,12 @@ export class SchoolComponent implements OnInit {
 
   saveOrUpdate() {
     console.log(this.schoolGroup.value);
+    if (this.isNew) {
     this.schoolService.createSchool(this.schoolGroup.value).subscribe(
       (data: any) => {
         console.log(data);
         this.modalService.dismissAll("on success");
-        this.toastr.success('school created/updated', 'Success');
+        this.toastr.success('school created', 'Success');
         this.loadSchools();
         this.schoolGroup.reset();
       },
@@ -90,6 +92,22 @@ export class SchoolComponent implements OnInit {
         this.toastr.error('Error in creating school', 'Error');
       }
     );
+    }else {
+      this.schoolService.updateSchool(this.schoolGroup.value,this.schoolGroup.get('schoolId').value).subscribe(
+        (data: any) => {
+          console.log(data);
+          this.modalService.dismissAll("on success");
+          this.toastr.success('school updated', 'Success');
+          this.loadSchools();
+          this.schoolGroup.reset();
+        },
+        (error: any) => {
+          console.log(error);
+          this.modalService.dismissAll("on fail");
+          this.toastr.error('Error in updating school', 'Error');
+        }
+      );
+    }
   }
 
   openDelete(deleteConfirm, school) {
@@ -151,7 +169,6 @@ export class SchoolComponent implements OnInit {
           this.closeResult = `Closed with: ${result}`;
         },
         reason => {
-          // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         }
       );
   }

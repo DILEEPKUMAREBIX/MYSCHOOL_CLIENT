@@ -18,7 +18,7 @@ import { SchoolService } from '../schools/school.service';
 export class UsersComponent implements OnInit {
 
   schoolObj: any = {};
-  isNew: boolean;
+  isNew: boolean=true;
   manageUserHeading: string;
   closeResult;
   users: any = [];
@@ -68,6 +68,7 @@ export class UsersComponent implements OnInit {
       createdBy: ['', Validators.required],
       createdDate: ['', Validators.required],
       address: this.fb.group({
+        addressId:[],
         houseNum: ['', [Validators.required]],
         street: ['', Validators.required],
         village: ['', Validators.required],
@@ -106,20 +107,38 @@ getSchools(){
 
   saveOrUpdate() {
     console.log(this.userGroup.value);
-    this.usersService.createUser(this.userGroup.value).subscribe(
-      (data: any) => {
-        console.log(data);
-        this.modalService.dismissAll("on success");
-        this.toastr.success('user created/updated', 'Success');
-        this.loadUsers();
-        this.userGroup.reset();
-      },
-      (error: any) => {
-        console.log(error);
-        this.modalService.dismissAll("on fail");
-        this.toastr.error('Error in creating user', 'Error');
-      }
-    );
+    if(this.isNew){
+      this.usersService.createUser(this.userGroup.value).subscribe(
+        (data: any) => {
+          console.log(data);
+          this.modalService.dismissAll("on success");
+          this.toastr.success('user created', 'Success');
+          this.loadUsers();
+          this.userGroup.reset();
+        },
+        (error: any) => {
+          console.log(error);
+          this.modalService.dismissAll("on fail");
+          this.toastr.error('Error in creating user', 'Error');
+        }
+      );
+    }else{
+      this.usersService.updateUser(this.userGroup.value,this.userGroup.get('userId').value).subscribe(
+        (data: any) => {
+          console.log(data);
+          this.modalService.dismissAll("on success");
+          this.toastr.success('user updated', 'Success');
+          this.loadUsers();
+          this.userGroup.reset();
+        },
+        (error: any) => {
+          console.log(error);
+          this.modalService.dismissAll("on fail");
+          this.toastr.error('Error in creating user', 'Error');
+        }
+      );
+    }
+    
   }
 
   openDelete(deleteConfirm, user) {

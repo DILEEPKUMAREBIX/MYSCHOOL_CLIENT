@@ -50,18 +50,17 @@ export class EventsComponent implements OnInit {
     }
   }
 
-
   loadAllImages() {
     this.eventservice.getAllFiles().subscribe(
       data => {
         this.images = data;
-       
       },
       error => { }
     );
   }
+
   sanitizeImageUrl(imageUrl: string): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(imageUrl.slice(1,imageUrl.length));
+    return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
     
 }
 }
