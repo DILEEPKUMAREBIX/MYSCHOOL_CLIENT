@@ -1,0 +1,145 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon"><i class="material-icons">assignment</i></div>
+            <h4 class="card-title">Leaves</h4>
+          </div>
+          <div class="card-body">
+            <div class="toolbar">
+              <button mat-raised-button class="btn btn-behance" (click)="open(content, true)">New Leave
+              </button>
+            </div>
+            <div class="material-datatables">
+              <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0"
+                width="100%" style="width:100%">
+                <thead>
+                  <th>Id</th>
+                  <th>Date</th>
+                  <th>Reason</th>
+                  <th>School</th>
+                  <th>User</th>
+                  <th>Actions</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let leave of leaves">
+                    <td>{{leave.leaveId}}</td>
+                    <td>{{leave.leaveDate}}</td>
+                    <td>{{leave.description}}</td>
+                    <td>{{leave.schoolName.name}}</td>
+                    <td>{{leave.userName.firstName}}</td>
+                    <td class="">
+                      <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit"
+                        (click)="open(content, false, leave)"><i class="material-icons">dvr</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove"
+                        (click)="openDelete(deleteConfirm, leave)"><i class="material-icons">close</i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{manageLeavesHeading}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="leavesGroup">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="bmd-label-floating">School</label>
+            <select id="schoolIdno" class="form-control" formControlName="schoolIdno">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of schools" [value]='value.schoolId'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="leavesGroup.get('schoolIdno').hasError('required') 
+            && leavesGroup.get('schoolIdno').touched">
+              Please Select one School
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="bmd-label-floating">User</label>
+            <select id="userId" class="form-control" formControlName="userId">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of users" [value]='value.userId'>{{value.firstName}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="leavesGroup.get('userId').hasError('required') 
+            && leavesGroup.get('userId').touched">
+              Please Select one User
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="bmd-label-floating">leaveDate</label>
+            <input type="date" class="form-control" formControlName="leaveDate">
+            <div class="error text-danger" *ngIf="leavesGroup.get('leaveDate').hasError('required') && 
+            leavesGroup.get('leaveDate').touched">
+              Please Select Date
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="bmd-label-floating">Reason</label>
+            <input type="text" class="form-control" formControlName="description">
+            <div class="error text-danger" *ngIf="leavesGroup.get('description').hasError('required') && 
+            leavesGroup.get('description').touched">
+              Please Enter Reason
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
+    <button mat-raised-button type="submit" class="btn btn-rose pull-right"
+      (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
+  </div>
+</ng-template>
+
+
+<ng-template #deleteConfirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title"> Delete Leave</h4>
+    <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <strong>Are you sure you want to delete
+        <span class="text-primary">Leave: {{deletionHoliday.description}}
+        </span> ?</strong>
+    </p>
+    <p>All information associated with this will be permanently deleted.
+      <span class="text-danger">This operation can not be undone.</span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="onDeleteConfirmation()">Ok</button>
+  </div>
+</ng-template>

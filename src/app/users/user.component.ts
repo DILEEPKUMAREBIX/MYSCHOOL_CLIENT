@@ -24,8 +24,10 @@ export class UsersComponent implements OnInit {
   users: any = [];
   deletionUser: any;
   typeValues: any = [];
-  Gender: any = [];
-  SchoolsList: any = [];
+  gender: any = [];
+  schoolsList: any = [];
+  casteList: any=[];
+  religionList:any = [];
   selectedFiles: FileList;
   currentFileUpload: File;
 
@@ -45,7 +47,9 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.typeValues = this.commonService.getCommonValue('UserCategory', '');
-    this.Gender = this.commonService.getCommonValue('Gender', '');
+    this.gender = this.commonService.getCommonValue('Gender', '');
+    this.casteList = this.commonService.getCommonValue('Caste', '');
+    this.religionList = this.commonService.getCommonValue('Religion', '');
     this.getSchools();
     this.userGroup = this.fb.group({
       userId: [null],
@@ -54,6 +58,9 @@ export class UsersComponent implements OnInit {
       fatherName: ['', Validators.required],
       motherName: ['', Validators.required],
       genderId: ['', Validators.required],
+      religionId: ['', Validators.required],
+      casteId: ['', Validators.required],
+      idProof: ['', Validators.required],
       userName: ['', Validators.required],
       password: ['', Validators.required],
       email: ['', Validators.required],
@@ -86,7 +93,7 @@ export class UsersComponent implements OnInit {
 getSchools(){
   this.schoolservice.getAllSchools().subscribe(
     data => {
-      this.SchoolsList = data;
+      this.schoolsList = data;
     },
     error => {
     }
