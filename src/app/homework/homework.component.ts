@@ -89,7 +89,6 @@ export class HomeworkComponent implements OnInit {
   ngOnInit() {
     this.classes = this.commonService.getCommonValue('CLASS', '');
     this.subjects = this.commonService.getCommonValue('SubjectCatagory', '');
-    
     this.sections = this.commonService.getCommonValue('SECTION', '');
     this.getSchools();
     this.homeworkGroup = this.fb.group({
