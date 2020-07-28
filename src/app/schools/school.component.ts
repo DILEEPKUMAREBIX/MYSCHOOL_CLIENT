@@ -149,6 +149,7 @@ export class SchoolComponent implements OnInit {
     }
   }
 
+  
   open(content, type: boolean, school?) {
     this.isNew = type;
     this.manageSchoolHeading = this.isNew

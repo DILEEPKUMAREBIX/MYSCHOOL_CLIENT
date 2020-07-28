@@ -230,6 +230,7 @@ export class UsersComponent implements OnInit {
       );
   }
 
+  
   openUser(singleUser, user) {
     this.userGroup.patchValue(user, { onlySelf: true });
     this.modalService.open(singleUser, {

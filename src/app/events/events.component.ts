@@ -90,6 +90,7 @@ export class EventsComponent implements OnInit {
     );
   }
 
+  
   getAllFolders() {
     this.eventservice.getAllFolders().subscribe(
       data => {

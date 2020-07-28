@@ -17,6 +17,7 @@ export class UserService {
     return this.http.get(this.url + 'users');
   }
 
+  
   createUser(user: any, file: File) {
 
     const formData: FormData = new FormData();

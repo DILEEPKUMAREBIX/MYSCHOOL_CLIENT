@@ -17,9 +17,7 @@ export class EventsService {
 
   pushFileToStorage(file: File,folderName:any) {
     const formdata: FormData = new FormData();
-  
       formdata.append("file",file);
-  
     formdata.append('foldername', folderName);
     const req = new HttpRequest('POST', this.url + 'uploadFile', formdata, {
       reportProgress: true,

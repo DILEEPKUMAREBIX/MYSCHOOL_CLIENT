@@ -16,6 +16,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
   styleUrls: ['./homework.component.css']
 })
 export class HomeworkComponent implements OnInit {
+  
   classes: any = [];
   subjects: any = [];
   sections: any = [];

@@ -25,7 +25,6 @@ export class LeavesComponent implements OnInit {
   schools: any = [];
   deletionleave: any;
 
-
   leavesGroup: FormGroup;
 
   constructor(public dialog: MatDialog,
