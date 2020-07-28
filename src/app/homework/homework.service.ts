@@ -29,6 +29,7 @@ export class HomeworkService {
     return this.http.put(this.url + 'homework/' + id, homework);
   }
 
+  
   deleteHomeWork(id: any) {
     return this.http.delete(this.url + 'homework/' + id);
   }

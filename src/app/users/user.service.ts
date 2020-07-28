@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  
+
   usedLanguage: any = 'en';
-  
+
   url: string = environment.APIURL + 'myschool/';
   constructor(private http: HttpClient) { }
 
@@ -17,12 +17,22 @@ export class UserService {
     return this.http.get(this.url + 'users');
   }
 
-  createUser(school: any) {
-    return this.http.post(this.url + 'users', school);
+  
+  createUser(user: any, file: File) {
+
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+    formData.append('user', JSON.stringify(user));
+    return this.http.post(
+      this.url + 'users',
+      formData,
+      { responseType: 'text' });
   }
 
-  updateUser(school: any,id:any) {
-    return this.http.put(this.url + 'users/'+id, school);
+
+  updateUser(user: any, id: any) {
+    return this.http.put(this.url + 'users/' + id, user);
   }
 
   deleteUser(id: any) {
@@ -31,7 +41,7 @@ export class UserService {
   pushFileToStorage(file: File) {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
-    const req = new HttpRequest('POST',this.url+'users/usersupload', formdata, {
+    const req = new HttpRequest('POST', this.url + 'users/usersupload', formdata, {
       reportProgress: true,
       responseType: 'text'
     });

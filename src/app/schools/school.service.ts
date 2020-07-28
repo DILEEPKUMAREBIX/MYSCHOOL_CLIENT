@@ -16,6 +16,7 @@ export class SchoolService {
     return this.http.get(this.url + 'schools');
   }
 
+  
   createSchool(school: any) {
     return this.http.post(this.url + 'schools', school);
   }

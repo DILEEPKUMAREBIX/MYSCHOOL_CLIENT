@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +9,9 @@ import { HttpResponse } from '@angular/common/http';
 import { CommonService } from '../shared/services/common.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SchoolService } from '../schools/school.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-user',
@@ -18,7 +21,7 @@ import { SchoolService } from '../schools/school.service';
 export class UsersComponent implements OnInit {
 
   schoolObj: any = {};
-  isNew: boolean=true;
+  isNew: boolean = true;
   manageUserHeading: string;
   closeResult;
   users: any = [];
@@ -26,12 +29,16 @@ export class UsersComponent implements OnInit {
   typeValues: any = [];
   gender: any = [];
   schoolsList: any = [];
-  casteList: any=[];
-  religionList:any = [];
-  selectedFiles: FileList;
-  currentFileUpload: File;
-
+  casteList: any = [];
+  religionList: any = [];
+  selectedFile: any;
+  file: File;
   userGroup: FormGroup;
+  searchText;
+  page: any = 1;
+  pageSize: any = 5;
+  collectionSize: any = 0;
+
   constructor(public dialog: MatDialog,
     private modalService: NgbModal,
     private translate: TranslateService,
@@ -40,9 +47,11 @@ export class UsersComponent implements OnInit {
     private fb: FormBuilder,
     private commonService: CommonService,
     private spinner: NgxSpinnerService,
-    private schoolservice:SchoolService
+    private schoolservice: SchoolService,
+    private route: ActivatedRoute, private router: Router
   ) {
     translate.setDefaultLang('en');
+
   }
 
   ngOnInit() {
@@ -51,6 +60,7 @@ export class UsersComponent implements OnInit {
     this.casteList = this.commonService.getCommonValue('Caste', '');
     this.religionList = this.commonService.getCommonValue('Religion', '');
     this.getSchools();
+    this.collectionSize = this.users.length;
     this.userGroup = this.fb.group({
       userId: [null],
       firstName: ['', Validators.required],
@@ -75,7 +85,7 @@ export class UsersComponent implements OnInit {
       createdBy: ['', Validators.required],
       createdDate: ['', Validators.required],
       address: this.fb.group({
-        addressId:[],
+        addressId: [],
         houseNum: ['', [Validators.required]],
         street: ['', Validators.required],
         village: ['', Validators.required],
@@ -90,21 +100,30 @@ export class UsersComponent implements OnInit {
     });
     this.loadUsers();
   }
-getSchools(){
-  this.schoolservice.getAllSchools().subscribe(
-    data => {
-      this.schoolsList = data;
-    },
-    error => {
-    }
-  );
-}
+
+  get userslist(): any[] {
+    return this.users
+      .map((userlist: any, i: any) => ({ id: i + 1, ...userlist }))
+      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  }
+
+  getSchools() {
+    this.schoolservice.getAllSchools().subscribe(
+      data => {
+        this.schoolsList = data;
+      },
+      error => {
+      }
+    );
+  }
+
   loadUsers() {
     this.spinner.show();
     this.usersService.getAllUsers().subscribe(
       data => {
         this.spinner.hide();
         this.users = data;
+
       },
       error => {
         this.spinner.hide();
@@ -112,10 +131,11 @@ getSchools(){
     );
   }
 
+
   saveOrUpdate() {
     console.log(this.userGroup.value);
-    if(this.isNew){
-      this.usersService.createUser(this.userGroup.value).subscribe(
+    if (this.isNew) {
+      this.usersService.createUser(this.userGroup.value, this.selectedFile[0]).subscribe(
         (data: any) => {
           console.log(data);
           this.modalService.dismissAll("on success");
@@ -129,8 +149,8 @@ getSchools(){
           this.toastr.error('Error in creating user', 'Error');
         }
       );
-    }else{
-      this.usersService.updateUser(this.userGroup.value,this.userGroup.get('userId').value).subscribe(
+    } else {
+      this.usersService.updateUser(this.userGroup.value, this.userGroup.get('userId').value).subscribe(
         (data: any) => {
           console.log(data);
           this.modalService.dismissAll("on success");
@@ -145,7 +165,6 @@ getSchools(){
         }
       );
     }
-    
   }
 
   openDelete(deleteConfirm, user) {
@@ -176,6 +195,7 @@ getSchools(){
       }
     );
   }
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return "by pressing ESC";
@@ -192,7 +212,6 @@ getSchools(){
       ? "Create User"
       : "Update User";
     if (this.isNew) {
-
     } else {
       this.userGroup.patchValue(user, { onlySelf: true });
     }
@@ -211,20 +230,36 @@ getSchools(){
       );
   }
 
+  
+  openUser(singleUser, user) {
+    this.userGroup.patchValue(user, { onlySelf: true });
+    this.modalService.open(singleUser, {
+      ariaLabelledBy: "modal-basic-title",
+      windowClass: "my-class"
+    })
+      .result.then(
+        result => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        reason => {
+          // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
   selectFile(event) {
-    this.selectedFiles = event.target.files;
+    this.selectedFile = event.target.files;
   }
 
   upload() {
-    this.currentFileUpload = this.selectedFiles.item(0);
-    this.usersService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
+    this.usersService.pushFileToStorage(this.selectedFile[0]).subscribe(event => {
       if (event instanceof HttpResponse) {
         console.log('File is completely uploaded!');
         this.toastr.success('file upload successfully', 'Success');
       }
       this.loadUsers();
     });
-    this.selectedFiles = undefined;
+    this.selectedFile = undefined;
   }
 
   useLanguage(language: string) {

@@ -26,4 +26,5 @@ export class HolidaysService {
   deleteHoliday(id: any) {
     return this.http.delete(this.url + 'Holidays/' + id);
   }
+  
 }

@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { AppComponent } from './app.component';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SidebarModule } from './sidebar/sidebar.module';
 import { FooterModule } from './shared/footer/footer.module';
 import { NavbarModule } from './shared/navbar/navbar.module';
@@ -24,6 +24,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgxPaginationModule} from 'ngx-pagination';
 import { UsersComponent } from './users/user.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { EventsComponent } from './events/events.component';
@@ -31,6 +32,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HomeworkComponent } from './homework/homework.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { LeavesComponent } from './leaves/leaves.component';
+
 
 @NgModule({
   exports: [
@@ -62,7 +64,9 @@ import { LeavesComponent } from './leaves/leaves.component';
     }),
     ToastrModule.forRoot(),
     ReactiveFormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    Ng2SearchPipeModule,
+    
   ],
   declarations: [
     AppComponent,

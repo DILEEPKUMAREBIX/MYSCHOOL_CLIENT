@@ -5,12 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { UserComponent } from './user.component';
 import { UserRoutes } from './user.routing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule.forChild(UserRoutes),
-        FormsModule
+        FormsModule,
+        NgbModule
     ],
     declarations: [UserComponent]
 })

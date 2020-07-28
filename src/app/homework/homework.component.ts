@@ -16,6 +16,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
   styleUrls: ['./homework.component.css']
 })
 export class HomeworkComponent implements OnInit {
+  
   classes: any = [];
   subjects: any = [];
   sections: any = [];
@@ -89,7 +90,6 @@ export class HomeworkComponent implements OnInit {
   ngOnInit() {
     this.classes = this.commonService.getCommonValue('CLASS', '');
     this.subjects = this.commonService.getCommonValue('SubjectCatagory', '');
-    
     this.sections = this.commonService.getCommonValue('SECTION', '');
     this.getSchools();
     this.homeworkGroup = this.fb.group({

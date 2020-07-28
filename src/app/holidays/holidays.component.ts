@@ -23,6 +23,7 @@ export class HolidaysComponent implements OnInit {
   schools: any = [];
   deletionHoliday: any;
 
+  
   holidayGroup: FormGroup;
 
   constructor(public dialog: MatDialog,

@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 export class LeavesService {
   usedLanguage: any = 'en';
 
+  
   url: string = environment.APIURL + 'myschool/';
   constructor(private http: HttpClient) { }
 

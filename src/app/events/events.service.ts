@@ -6,22 +6,47 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
   providedIn: 'root'
 })
 export class EventsService {
+  
+  getFiles(): any {
+    throw new Error("Method not implemented.");
+  }
   usedLanguage: any = 'en';
 
   url: string = environment.APIURL + 'myschool/';
   constructor(private http: HttpClient) { }
 
-  pushFileToStorage(file: File) {
+  pushFileToStorage(file: File,folderName:any) {
     const formdata: FormData = new FormData();
-    formdata.append('file', file);
-    const req = new HttpRequest('POST',this.url+'uploadFile', formdata, {
+      formdata.append("file",file);
+    formdata.append('foldername', folderName);
+    const req = new HttpRequest('POST', this.url + 'uploadFile', formdata, {
       reportProgress: true,
-      responseType: 'text'
+      responseType: 'json'
     });
     return this.http.request(req);
   }
 
-  getAllFiles() {
-    return this.http.get(this.url + 'allfiles');
+  // getAllFiles() {
+  //   return this.http.get(this.url + 'allfiles');
+  // }
+
+  getAllFolders() {
+    return this.http.get(this.url + 'allfolders');
+  }
+
+  createFolder(event: any) {
+    return this.http.post(this.url + 'createfolder', event);
+  }
+
+  updateFolder(event:any,id:any){
+    return this.http.post(this.url + 'updatefolder/'+id, event);
+  }
+  
+  getAllFilesFolder(foldername:any) {
+    return this.http.get(this.url + 'allfiles/'+foldername);
+  }
+
+  deleteImageInFolder(foldername:any,fullImgName:any){
+    return this.http.delete(this.url + 'deletefileinfolder/'+foldername+'/'+fullImgName);
   }
 }

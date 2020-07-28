@@ -15,7 +15,28 @@
               <label class="btn btn-default">
                 <input type="file" (change)="selectFile($event)">
               </label>
-              <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button>
+              <button class="btn btn-success"  (click)="upload()">Upload</button>
+            </div>
+            <div class="row">
+              <div class="col-md-3 search-hero">
+                <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
+                  placeholder="&#61442;  Start searching for a user by  name">
+              </div>
+              <div class="col-md-8 d-flex justify-content-between p-2" *ngIf="collectionSize > 0">
+                <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" [rotate]="true"
+                  [ellipses]="false" [boundaryLinks]="true">
+                  <ng-template ngbPaginationPrevious>Prev</ng-template>
+                  <ng-template ngbPaginationNext>Next</ng-template>
+                </ngb-pagination>
+                <!-- <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+                </ngb-pagination> -->
+                <select class="custom-select" style="width: auto;" [(ngModel)]="pageSize">
+                  <option [ngValue]="5">5 per page</option>
+                  <option [ngValue]="10">10 per page</option>
+                  <option [ngValue]="20">20 per page</option>
+                  <option [ngValue]="50">50 per page</option>
+                </select>
+              </div>
             </div>
             <div class="material-datatables">
               <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0"
@@ -30,7 +51,7 @@
                   <th>{{ 'myschool.actions' | translate }}</th>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let user of users">
+                  <tr *ngFor="let user of users | filter:searchText">
                     <td>{{user?.userId}}</td>
                     <td>{{user?.firstName + ' ' + user?.lastName}}</td>
                     <td>{{user?.address?.village}}</td>
@@ -42,6 +63,8 @@
                         (click)="open(content, false, user)"><i class="material-icons">dvr</i></a>
                       <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove"
                         (click)="openDelete(deleteConfirm, user)"><i class="material-icons">close</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-info btn-just-icon edit"
+                        (click)="openUser(singleUser, user)"><i class="material-icons">dvr</i></a>
                     </td>
                   </tr>
                 </tbody>
@@ -187,7 +210,7 @@
             </select>
             <div class="error text-danger" *ngIf="userGroup.get('casteId').hasError('required') 
             && userGroup.get('casteId').touched">
-              Please Select Proper Caste  
+              Please Select Proper Caste
             </div>
           </div>
         </div>
@@ -278,6 +301,18 @@
             && userGroup.get('categoryId').touched">
               Please Select Releted User Type
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <div style="position:relative;">
+            <a class='btn btn-danger' href='javascript:;'>
+              Choose File...
+              <input type="file" (change)="selectFile($event)" style='position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);
+                      -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;
+                      background-color:transparent;color:transparent;' name="file_source" size="40">
+            </a>
           </div>
         </div>
       </div>
@@ -372,6 +407,8 @@
       </div>
       <!-- <app-address></app-address> -->
     </form>
+
+    
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
@@ -402,5 +439,270 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
     <button type="button" class="btn btn-danger" (click)="onDeleteConfirmation()">Ok</button>
+  </div>
+</ng-template>
+
+<ng-template #singleUser let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{manageUserHeading}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body ScrollStyle">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="top-breadcrumb">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Social</li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <div class="img" style="    background-image: linear-gradient(150deg, rgba(63, 174, 255, .3)15%, rgba(63, 174, 255, .3)70%, rgba(63, 174, 255, .3)94%), url(https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg);
+    height: 350px;background-size: cover;"></div>
+      <div class="card social-prof">
+        <div class="card-body">
+          <div class="wrapper">
+            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" class="user-profile">
+            <h3>Jane Smith</h3>
+            <p>Web Developer</p>
+          </div>
+          <div class="row ">
+            <div class="col-lg-12">
+              <ul class=" nav nav-tabs justify-content-center s-nav">
+                <li><a href="#">Timeline</a></li>
+                <li><a class="active" href="#">About</a></li>
+                <li><a href="#">Friends</a></li>
+                <li><a href="#">Photos</a></li>
+                <li><a href="#">Videos</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body info-card social-about">
+              <h2 class="text-blue">About</h2>
+              <h4><strong>About Me</strong></h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. </p>
+              <h4 class="mb-3"><strong>Personal Info</strong></h4>
+              <div class="row">
+                <div class="col-6">
+                  <div class="social-info">
+                    <i class="fas fa-birthday-cake mr-2"></i>
+                    <span>15/08/1991</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="social-info">
+                    <i class="fas fa-map-marker-alt mr-2"></i>
+                    <span> New York</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="social-info">
+                    <i class="fas fas fa-users mr-2"></i>
+                    <span>Female</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="social-info">
+                    <i class="fas fa-briefcase mr-2"></i>
+                    <span>UI/UX Designer</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="social-info">
+                    <i class="fas fas fa-mobile mr-2"></i>
+                    <span>8392832983</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="social-info">
+                    <i class="fas fas fa-envelope mr-2"></i>
+                    <span>like @example.com</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card info-card">
+            <div class="card-body">
+              <h2 class="text-blue">Skills</h2>
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4>HTML5</h4>
+                  <div class="mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <h4>Bootstrap Framework</h4>
+                  <div class="mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4>Vanilla Javascript</h4>
+                  <div class="mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <h4>Angular Js</h4>
+                  <div class="mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4>Adobe Photoshop</h4>
+                  <div class="mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <h4>Adobe Illustrator</h4>
+                  <div class="mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4>SASS/SCSS</h4>
+                  <div class="mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <h4>WORDPRESS
+                  </h4>
+                  <div class="mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card info-card">
+            <div class="card-body">
+              <h2 class="text-blue">Education</h2>
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4><strong>Pune University </strong></h4>
+                  <p>May 2009 to June 2011 </p>
+                </div>
+                <div class="col-lg-6">
+                  <h4><strong>Course: Gamification</strong></h4>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. </p>
+                </div>
+                <div class="col-lg-6">
+                  <h4><strong>St Xavier Highschool</strong></h4>
+                  <p>Aug 2004 to June 2009 </p>
+                </div>
+                <div class="col-lg-6">
+                  <h4><strong>Bachelor - Computer Science</strong></h4>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card info-card">
+            <div class="card-body">
+              <h2 class="text-blue">Work</h2>
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4><strong>Creative Arts - 2016-19</strong></h4>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. </p>
+                </div>
+                <div class="col-lg-6">
+                  <h4><strong>Web Media - 2014-16</strong></h4>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. </p>
+                </div>
+                <div class="col-lg-6">
+                  <h4><strong>Global Infosoft - 2012-14</strong></h4>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. </p>
+                </div>
+                <div class="col-lg-6">
+                  <h4><strong>Freelancer - 2011-12</strong></h4>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
+    <!-- <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button> -->
+    <button mat-raised-button type="submit" class="btn btn-rose pull-right"
+      (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
   </div>
 </ng-template>
