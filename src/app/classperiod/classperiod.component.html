@@ -1,0 +1,167 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon"><i class="material-icons">assignment</i></div>
+            <h4 class="card-title">Holidays</h4>
+          </div>
+          <div class="card-body">
+            <div class="toolbar">
+              <button mat-raised-button class="btn btn-behance" (click)="open(content, true)">New ClassPeriod
+              </button>
+            </div>
+
+            <div class="material-datatables">
+              <table id="datatables" class="table table-striped table-no-bordered table-hover" cellspacing="0"
+                width="100%" style="width:100%">
+                <thead>
+                  <th>S.No</th>
+                  <th>Period Name</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Actions</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let classperiod of classpeiodslist">
+                    <td>{{classperiod.classPeriodId}}</td>
+                    <td>{{classperiod.periodName.name}}</td>
+                    <td>{{classperiod.startTime.split(":").slice(0,2).join(":") }}</td>
+                    <td>{{classperiod.endTime.split(":").slice(0,2).join(":") }}</td>
+                    <td class="">
+                      <a href="javascript:void(0)" class="btn btn-link btn-warning btn-just-icon edit"
+                        (click)="open(content, false, classperiod)"><i class="material-icons">dvr</i></a>
+                      <a href="javascript:void(0)" class="btn btn-link btn-danger btn-just-icon remove"
+                        (click)="openDelete(deleteConfirm, classperiod)"><i class="material-icons">close</i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{manageClassperiodHeading}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="classperiodGroup">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Start time</label>
+            <input type="time" class="form-control" formControlName="startTime" required step="60">
+            <div class="error text-danger" *ngIf="classperiodGroup.get('startTime').hasError('required') && 
+            classperiodGroup.get('startTime').touched">
+              Please Select Period Start time
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">End time</label>
+            <input type="time" class="form-control" formControlName="endTime" required step="60">
+            <div class="error text-danger" *ngIf="classperiodGroup.get('endTime').hasError('required') && 
+            classperiodGroup.get('endTime').touched">
+              Please Select Period End Time
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">School</label>
+            <select id="schoolIdno" class="form-control" formControlName="schoolIdno">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of schools" [value]='value.schoolId'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="classperiodGroup.get('schoolIdno').hasError('required') 
+            && classperiodGroup.get('schoolIdno').touched">
+              Please Select School
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Class</label>
+            <select id="classId" class="form-control" formControlName="classId">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of classlist" [value]='value.id'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="classperiodGroup.get('classId').hasError('required') 
+            && classperiodGroup.get('classId').touched">
+              Please Select Class
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Section</label>
+            <select id="sectionId" class="form-control" formControlName="sectionId">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of sectionlist" [value]='value.id'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="classperiodGroup.get('sectionId').hasError('required') 
+            && classperiodGroup.get('sectionId').touched">
+              Please Select Section
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="bmd-label-floating">Period</label>
+            <select id="periodIdno" class="form-control" formControlName="periodIdno">
+              <option selected [value]='0'>Choose...</option>
+              <option *ngFor="let value of periodlist" [value]='value.id'>{{value.name}}</option>
+            </select>
+            <div class="error text-danger" *ngIf="classperiodGroup.get('periodIdno').hasError('required') 
+            && classperiodGroup.get('periodIdno').touched">
+              Please Select Period Name
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
+    <button mat-raised-button type="submit" class="btn btn-rose pull-right"
+      (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
+  </div>
+</ng-template>
+
+
+<ng-template #deleteConfirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title"> Delete ClassPeriod</h4>
+    <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <strong>Are you sure you want to delete
+        <span class="text-primary">ClassPeriod: {{deletionClassperiod.description}}
+        </span> ?</strong>
+    </p>
+    <p>All information associated with this will be permanently deleted.
+      <span class="text-danger">This operation can not be undone.</span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="onDeleteConfirmation()">Ok</button>
+  </div>
+</ng-template>

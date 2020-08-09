@@ -15,7 +15,7 @@
               <label class="btn btn-default">
                 <input type="file" (change)="selectFile($event)">
               </label>
-              <button class="btn btn-success"  (click)="upload()">Upload</button>
+              <button class="btn btn-success" (click)="upload()">Upload</button>
             </div>
             <div class="row">
               <div class="col-md-3 search-hero">
@@ -408,7 +408,7 @@
       <!-- <app-address></app-address> -->
     </form>
 
-    
+
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
@@ -469,7 +469,7 @@
       <div class="card social-prof">
         <div class="card-body">
           <div class="wrapper">
-            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="" class="user-profile">
+            <img src={{user.image}} alt="" class="user-profile">
             <h3>Jane Smith</h3>
             <p>Web Developer</p>
           </div>
@@ -491,62 +491,129 @@
           <div class="card">
             <div class="card-body info-card social-about">
               <h2 class="text-blue">About</h2>
-              <h4><strong>About Me</strong></h4>
+              <!-- <h4><strong>About Me</strong></h4>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. </p>
+                dolore magna aliqua. </p> -->
               <h4 class="mb-3"><strong>Personal Info</strong></h4>
               <div class="row">
+                <div class="social-info">
+                  <span>{{user?.firstName + ' ' + user?.lastName}}</span>
+                </div>
+              </div>
+              <div  class="row">
                 <div class="col-6">
                   <div class="social-info">
-                    <i class="fas fa-birthday-cake mr-2"></i>
-                    <span>15/08/1991</span>
+                    <span>{{user?.fatherName}}</span>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="social-info">
-                    <i class="fas fa-map-marker-alt mr-2"></i>
-                    <span> New York</span>
+                    <span>{{user?.motherName}}</span>
+                  </div>
+                </div>
+              </div>
+              <div  class="row">
+                <div class="col-6">
+                  <div class="social-info">
+                    <span>{{user.gender.name}}</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="social-info">
+                    <span>{{user?.religion.name}}</span>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-6">
                   <div class="social-info">
-                    <i class="fas fas fa-users mr-2"></i>
-                    <span>Female</span>
+                    <span>{{user.caste.name}}</span>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="social-info">
-                    <i class="fas fa-briefcase mr-2"></i>
-                    <span>UI/UX Designer</span>
+                    <span>{{user?.idProof}}</span>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-6">
                   <div class="social-info">
-                    <i class="fas fas fa-mobile mr-2"></i>
-                    <span>8392832983</span>
+                    <span>{{user?.userName}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="social-info">
+                    <span>{{user.email}}</span>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="social-info">
-                    <i class="fas fas fa-envelope mr-2"></i>
-                    <span>like @example.com</span>
+                    <span>{{user.phone}}</span>
                   </div>
                 </div>
               </div>
-
+              <div class="row">
+                <div class="col-6">
+                  <div class="social-info">
+                    <span>{{user.roles}}</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="social-info">
+                    <span>{{user.permissions}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="social-info">
+                    <span>{{user.school.name}}</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="social-info">
+                    <span>{{user.category.name}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  <div class="social-info">
+                    <span>{{user.dateOfBirth  | date }}</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="social-info">
+                    <span>{{user.joiningDate | date}}</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="social-info">
+                    <span>{{user.endingDate  | date}}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div class="col-lg-6">
           <div class="card info-card">
             <div class="card-body">
-              <h2 class="text-blue">Skills</h2>
+              <h2 class="text-blue">Address</h2>
               <div class="row">
-                <div class="col-lg-6">
+                {{user?.address?.houseNum}},
+                {{user?.address?.street}},
+                {{user?.address?.landmark}},
+                {{user?.address?.village}},
+                {{user?.address?.mandal}},
+                {{user?.address?.district}},
+                {{user?.address?.state}},
+                {{user?.address?.pincode}}.
+
+                <!-- <div class="col-lg-6">
                   <h4>HTML5</h4>
                   <div class="mb-3">
                     <i class="fas fa-star"></i>
@@ -565,74 +632,7 @@
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                   </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <h4>Vanilla Javascript</h4>
-                  <div class="mb-3">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <h4>Angular Js</h4>
-                  <div class="mb-3">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <h4>Adobe Photoshop</h4>
-                  <div class="mb-3">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <h4>Adobe Illustrator</h4>
-                  <div class="mb-3">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <h4>SASS/SCSS</h4>
-                  <div class="mb-3">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <h4>WORDPRESS
-                  </h4>
-                  <div class="mb-3">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -699,10 +699,9 @@
     </div>
 
   </div>
-  <div class="modal-footer">
+  <!-- <div class="modal-footer">
     <button type="button" class="btn btn-warn" (click)="modal.close('cancel')">Cancel</button>
-    <!-- <button type="button" class="btn btn-primary" (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button> -->
     <button mat-raised-button type="submit" class="btn btn-rose pull-right"
       (click)="saveOrUpdate()">{{isNew?'Save':'Update'}}</button>
-  </div>
-</ng-template>
+  </div>-->
+</ng-template> 

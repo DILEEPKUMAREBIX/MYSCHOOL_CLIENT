@@ -32,6 +32,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HomeworkComponent } from './homework/homework.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { LeavesComponent } from './leaves/leaves.component';
+import { ClassperiodComponent } from './classperiod/classperiod.component';
 
 
 @NgModule({
@@ -77,7 +78,8 @@ import { LeavesComponent } from './leaves/leaves.component';
     EventsComponent,
     HomeworkComponent,
     HolidaysComponent,
-    LeavesComponent
+    LeavesComponent,
+    ClassperiodComponent
 
   ],
   bootstrap: [AppComponent],
