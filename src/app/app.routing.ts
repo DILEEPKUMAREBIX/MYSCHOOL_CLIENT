@@ -9,6 +9,7 @@ import { EventsComponent } from './events/events.component';
 import { HomeworkComponent } from './homework/homework.component';
 import { LeavesComponent } from './leaves/leaves.component';
 import { HolidaysComponent } from './holidays/holidays.component';
+import { ClassperiodComponent } from './classperiod/classperiod.component';
 
 export const AppRoutes: Routes = [
     {
@@ -40,6 +41,9 @@ export const AppRoutes: Routes = [
     },{
         path: 'holidays',
         component: HolidaysComponent
+    },{
+        path: 'classperiod',
+        component: ClassperiodComponent
     },{
         path: 'tables',
         loadChildren: './tables/tables.module#TablesModule'
