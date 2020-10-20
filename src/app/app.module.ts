@@ -33,6 +33,12 @@ import { HomeworkComponent } from './homework/homework.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { LeavesComponent } from './leaves/leaves.component';
 import { ClassperiodComponent } from './classperiod/classperiod.component';
+import { TimetableComponent } from './timetable/timetable.component';
+import { FlatpickrModule } from 'angularx-flatpickr';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { TimetablefilterPipe } from './shared/pipes/timetablefilter.pipe';
+
 
 
 @NgModule({
@@ -45,6 +51,11 @@ import { ClassperiodComponent } from './classperiod/classperiod.component';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    FlatpickrModule.forRoot(),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
     RouterModule.forRoot(AppRoutes, {
       useHash: true
     }),
@@ -79,7 +90,9 @@ import { ClassperiodComponent } from './classperiod/classperiod.component';
     HomeworkComponent,
     HolidaysComponent,
     LeavesComponent,
-    ClassperiodComponent
+    ClassperiodComponent,
+    TimetableComponent,
+    TimetablefilterPipe
 
   ],
   bootstrap: [AppComponent],
